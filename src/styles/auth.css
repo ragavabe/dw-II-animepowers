@@ -1,0 +1,649 @@
+/* Auth Page Layout - Inspirado fielmente no design Solara / Anime Powers */
+.auth-page-wrapper {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 0.5rem;
+}
+
+.auth-card-container {
+  width: 100%;
+  max-width: 1100px;
+  min-height: 680px;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  color: #1a1a1a;
+  position: relative;
+}
+
+/* Painel Esquerdo (Formulário Claro) */
+.auth-left-panel {
+  padding: 3rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #ffffff;
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #173829;
+  letter-spacing: -0.5px;
+  text-decoration: none;
+  margin-bottom: 2rem;
+}
+
+.auth-brand-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #173829;
+  color: #55e69e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.auth-header {
+  margin-bottom: 2rem;
+}
+
+.auth-header h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.5px;
+}
+
+.auth-subheading {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.auth-toggle-link {
+  color: #173829;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+  margin-left: 0.3rem;
+  transition: opacity 0.2s;
+}
+
+.auth-toggle-link:hover {
+  opacity: 0.8;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.auth-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  position: relative;
+}
+
+.auth-input-group label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.auth-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  color: #1f2937;
+  background: #ffffff;
+  outline: none;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.auth-input:focus {
+  border-color: #173829;
+  box-shadow: 0 0 0 3px rgba(23, 56, 41, 0.12);
+}
+
+.auth-input::placeholder {
+  color: #9ca3af;
+}
+
+.auth-eye-btn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 6px;
+  transition: color 0.2s;
+}
+
+.auth-eye-btn:hover {
+  color: #111827;
+}
+
+.auth-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.86rem;
+  margin-top: -0.25rem;
+}
+
+.auth-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  cursor: pointer;
+  user-select: none;
+}
+
+.auth-checkbox-label input[type="checkbox"] {
+  accent-color: #173829;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.auth-forgot-btn {
+  color: #374151;
+  font-weight: 600;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  font-size: 0.86rem;
+  cursor: pointer;
+}
+
+.auth-submit-btn {
+  width: 100%;
+  background: #173829;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding: 0.95rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(23, 56, 41, 0.25);
+  margin-top: 0.5rem;
+}
+
+.auth-submit-btn:hover {
+  background: #10281d;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(23, 56, 41, 0.35);
+}
+
+.auth-submit-btn:active {
+  transform: translateY(0);
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.25rem 0 0.85rem;
+  color: #9ca3af;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.auth-divider span {
+  padding: 0 1rem;
+}
+
+.auth-social-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.auth-social-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: #ffffff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.auth-social-btn:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  color: #111827;
+}
+
+.auth-social-btn svg {
+  flex-shrink: 0;
+}
+
+.auth-toast-alert {
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.auth-toast-alert.error {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.auth-toast-alert.success {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+/* Painel Direito (Fundo Verde Escuro Elegante - Idêntico ao Modelo) */
+.auth-right-panel {
+  background: radial-gradient(circle at 80% 20%, #1f4f39 0%, #173829 45%, #0f271c 100%);
+  color: #ffffff;
+  padding: 2.75rem 3.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-right-panel::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: rgba(85, 230, 158, 0.08);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.auth-right-top {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.auth-support-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+.auth-support-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+/* Card Flutuante Branco no Painel Direito */
+.auth-showcase-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 1.8rem;
+  color: #111827;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  position: relative;
+  margin: 1.5rem 0;
+  transition: transform 0.3s ease;
+}
+
+.auth-showcase-card:hover {
+  transform: translateY(-3px);
+}
+
+.auth-showcase-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.auth-showcase-text h3 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #173829;
+  line-height: 1.2;
+  margin: 0 0 0.6rem 0;
+  max-width: 220px;
+}
+
+.auth-showcase-text p {
+  font-size: 0.8rem;
+  color: #6b7280;
+  line-height: 1.45;
+  margin: 0 0 1.25rem 0;
+}
+
+.auth-learn-btn {
+  display: inline-block;
+  background: #173829;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.auth-learn-btn:hover {
+  background: #10281d;
+  color: #55e69e;
+}
+
+/* Mini Cartão Holográfico Anime Card */
+.auth-mini-card {
+  width: 170px;
+  height: 105px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1f4f39 0%, #10281d 100%);
+  border: 1px solid rgba(85, 230, 158, 0.3);
+  padding: 0.75rem;
+  color: #ffffff;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transform: rotate(6deg);
+  transition: transform 0.3s ease;
+}
+
+.auth-showcase-card:hover .auth-mini-card {
+  transform: rotate(0deg) scale(1.05);
+}
+
+.auth-mini-brand {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #55e69e;
+}
+
+.auth-mini-number {
+  font-family: monospace;
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.auth-mini-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.58rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.auth-mini-tag {
+  background: rgba(85, 230, 158, 0.2);
+  color: #55e69e;
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+/* Badge Flutuante de Estatística ("Earnings $350.40" adaptado para Poder) */
+.auth-stat-float {
+  position: absolute;
+  bottom: -15px;
+  right: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 0.5rem 0.85rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid #f3f4f6;
+}
+
+.auth-stat-icon {
+  color: #173829;
+  font-size: 1.1rem;
+}
+
+.auth-stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-stat-label {
+  font-size: 0.65rem;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.auth-stat-val {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #173829;
+}
+
+/* Parte Inferior do Painel Direito */
+.auth-right-footer {
+  margin-top: 2rem;
+}
+
+.auth-right-footer h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: -0.3px;
+}
+
+.auth-right-footer p {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin: 0 0 1.5rem 0;
+  max-width: 440px;
+}
+
+.auth-slider-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+}
+
+.auth-slider-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.auth-slider-btn:hover {
+  color: #ffffff;
+}
+
+.auth-slider-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.auth-slider-dot.active {
+  background: #ffffff;
+  transform: scale(1.3);
+}
+
+.auth-db-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: #173829;
+  background: #e8f5ed;
+  border: 1px solid #b7e4c7;
+  padding: 0.35rem 0.65rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+/* Avatar Selector no Cadastro */
+.auth-avatar-selector-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.auth-avatar-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #374151;
+}
+
+.auth-avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  .auth-avatar-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.auth-avatar-item {
+  background: #f3f4f6;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.auth-avatar-item:hover {
+  border-color: #55e69e;
+  transform: translateY(-2px);
+}
+
+.auth-avatar-item.selected {
+  border-color: #173829;
+  background: #e8f5ed;
+  box-shadow: 0 0 0 2px #55e69e;
+}
+
+.auth-avatar-item img {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.auth-avatar-name {
+  font-size: 0.68rem;
+  color: #374151;
+  font-weight: 600;
+  max-width: 48px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsividade Mobile e Telas Médias */
+@media (max-width: 900px) {
+  .auth-card-container {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+  }
+
+  .auth-left-panel {
+    padding: 2.5rem 1.75rem;
+  }
+
+  .auth-right-panel {
+    padding: 2.5rem 1.75rem;
+  }
+}

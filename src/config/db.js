@@ -11,6 +11,7 @@ export const DB_CONFIG = {
   storageMode: import.meta.env.VITE_DB_STORAGE_MODE || 'local_and_cloud',
   supabaseUrl: import.meta.env.VITE_SUPABASE_URL || '',
   supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+  googleClientId: import.meta.env.VITE_GOOGLE_CLIENT_ID || '222156138599-ttteg9ra4duqmknbtlcc7rkvq2s01rhp.apps.googleusercontent.com',
 };
 
 // Avatares de Anime predefinidos para usuários

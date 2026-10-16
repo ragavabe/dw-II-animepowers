@@ -28,6 +28,23 @@ const INITIAL_USERS = [
 
 const AuthContext = createContext(null);
 
+// Carregar Google Identity Services (GIS) script dinamicamente
+function loadGoogleScript() {
+  return new Promise((resolve, reject) => {
+    if (window.google?.accounts?.id) {
+      resolve(window.google);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.defer = true;
+    script.onload = () => resolve(window.google);
+    script.onerror = () => reject(new Error('Falha ao carregar Google Identity Services'));
+    document.head.appendChild(script);
+  });
+}
+
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(() => {
     try {
@@ -43,6 +60,8 @@ export function AuthProvider({ children }) {
     }
   });
 
+  const [googleReady, setGoogleReady] = useState(false);
+
   // Inicializa o banco de dados de usuários no localStorage se não existir
   useEffect(() => {
     try {
@@ -53,6 +72,24 @@ export function AuthProvider({ children }) {
     } catch (e) {
       console.error('Erro ao acessar banco local:', e);
     }
+  }, []);
+
+  // Carrega Google GIS e inicializa o botão
+  useEffect(() => {
+    let mounted = true;
+    loadGoogleScript()
+      .then((google) => {
+        if (!mounted) return;
+        google.accounts.id.initialize({
+          client_id: DB_CONFIG.googleClientId,
+          callback: handleGoogleCredential,
+          auto_select: false,
+          cancel_on_tap_outside: true
+        });
+        setGoogleReady(true);
+      })
+      .catch((err) => console.error('Google GIS error:', err));
+    return () => { mounted = false; };
   }, []);
 
   const getUsers = () => {
@@ -92,7 +129,6 @@ export function AuthProvider({ children }) {
       return { success: false, message: 'Este e-mail já está cadastrado! Faça login.' };
     }
 
-    // Seleciona um avatar anime default se não fornecido
     const chosenAvatar =
       avatarUrl ||
       ANIME_AVATARS[Math.floor(Math.random() * ANIME_AVATARS.length)].url;
@@ -161,29 +197,79 @@ export function AuthProvider({ children }) {
     return { success: true, message: 'Login realizado com sucesso!' };
   };
 
-  const loginWithSocial = (provider) => {
-    const socialEmail = `${provider.toLowerCase()}user@animepowers.com`;
-    const avatar = provider === 'Google' ? ANIME_AVATARS[2].url : ANIME_AVATARS[3].url;
-    const sessionData = {
-      id: `social_${Date.now()}`,
-      email: socialEmail,
-      name: `${provider} Guerreiro`,
-      avatar,
-      role: 'Aliado Dimensional',
-      provider
-    };
+  const handleGoogleCredential = (response) => {
     try {
+      // Decodifica o JWT token do Google
+      const payload = JSON.parse(atob(response.credential.split('.')[1]));
+      
+      const users = getUsers();
+      let user = users.find((u) => u.email.toLowerCase() === payload.email.toLowerCase());
+      
+      if (!user) {
+        // Cria novo usuário se não existir
+        user = {
+          id: 'google_' + payload.sub,
+          email: payload.email,
+          name: payload.name,
+          avatar: payload.picture,
+          role: 'Guerreiro Google',
+          createdAt: new Date().toISOString(),
+          provider: 'google'
+        };
+        const updatedUsers = [...users, user];
+        localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(updatedUsers));
+      } else if (!user.avatar && payload.picture) {
+        // Atualiza avatar se não tiver
+        user.avatar = payload.picture;
+        const updatedUsers = users.map((u) => u.id === user.id ? user : u);
+        localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(updatedUsers));
+      }
+
+      const sessionData = {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        avatar: user.avatar || ANIME_AVATARS[0].url,
+        role: user.role || 'Guerreiro das Sombras',
+        provider: 'google'
+      };
+      
       localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(sessionData));
-    } catch (e) {
-      console.error(e);
+      setCurrentUser(sessionData);
+    } catch (err) {
+      console.error('Erro ao processar credencial Google:', err);
     }
-    setCurrentUser(sessionData);
-    return { success: true, message: `Conectado via ${provider}!` };
+  };
+
+  const loginWithGoogle = () => {
+    if (!window.google?.accounts?.id) {
+      return { success: false, message: 'Google Sign-In não carregado. Tente novamente.' };
+    }
+    return new Promise((resolve) => {
+      window.google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          // Fallback: renderiza o botão se o One Tap não aparecer
+          resolve({ success: false, message: 'Use o botão "Entrar com Google" abaixo.' });
+        }
+      });
+    });
+  };
+
+  const renderGoogleButton = (elementId) => {
+    if (!window.google?.accounts?.id || !document.getElementById(elementId)) return;
+    window.google.accounts.id.renderButton(
+      document.getElementById(elementId),
+      { theme: 'outline', size: 'large', width: '100%', text: 'continue_with', logo_alignment: 'left' }
+    );
   };
 
   const logout = () => {
     try {
       localStorage.removeItem(SESSION_STORAGE_KEY);
+      // Revoga o token do Google se logado via Google
+      if (currentUser?.provider === 'google' && window.google?.accounts?.id) {
+        window.google.accounts.id.disableAutoSelect();
+      }
     } catch (e) {
       console.error(e);
     }
@@ -212,7 +298,9 @@ export function AuthProvider({ children }) {
         currentUser,
         register,
         login,
-        loginWithSocial,
+        loginWithGoogle,
+        renderGoogleButton,
+        googleReady,
         logout,
         updateUserAvatar,
         dbConfig: DB_CONFIG,

@@ -10,7 +10,7 @@
     "personagem": "Naruto Uzumaki",
     "anime": "Naruto",
     "descricao": "Esfera espiral de chakra puro em alta rotação. Causa dano cinético concentrado à queima-roupa.",
-    "imagem": "/imagenspoderes/rasengan.jpeg"
+    "imagem": "/imagenspoderes/rasengan.jpg"
   },
   {
     "id": 2,
@@ -23,7 +23,7 @@
     "personagem": "Kakashi Hatake",
     "anime": "Naruto",
     "descricao": "Lâmina perfurante de relâmpagos concentrados na mão. Ressoa com o som de mil pássaros cortando o ar.",
-    "imagem": "/imagenspoderes/chidori.jpeg"
+    "imagem": "/imagenspoderes/chidori.jpg"
   },
   {
     "id": 3,
@@ -36,7 +36,7 @@
     "personagem": "Monkey D. Luffy",
     "anime": "One Piece",
     "descricao": "Chuva ininterrupta de socos elásticos hiper-acelerados que parecem dezenas de braços simultâneos.",
-    "imagem": "/imagenspoderes/gomugomunogatling.jpeg"
+    "imagem": "/imagenspoderes/gomugomunogatling.jpg"
   },
   {
     "id": 4,
@@ -49,7 +49,7 @@
     "personagem": "Portgas D. Ace",
     "anime": "One Piece",
     "descricao": "Esfera colossal de fogo criada a partir da Mera Mera no Mi que simula um sol miniatura caindo no campo.",
-    "imagem": "/imagenspoderes/entei.jpeg"
+    "imagem": "/imagenspoderes/entei.jpg"
   },
   {
     "id": 5,
@@ -62,7 +62,7 @@
     "personagem": "Son Goku",
     "anime": "Dragon Ball",
     "descricao": "Feixe monumental de Ki concentrado disparado das palmas das mãos, capaz de perfurar montanhas e planetas.",
-    "imagem": "/imagenspoderes/kamehamenha.jpeg"
+    "imagem": "/imagenspoderes/kamehamenha.jpg"
   },
   {
     "id": 6,
@@ -75,7 +75,7 @@
     "personagem": "Vegeta",
     "anime": "Dragon Ball",
     "descricao": "Técnica suprema do Príncipe dos Saiyajins. Carrega toda a sua fúria e orgulho em um canhão dourado avassalador.",
-    "imagem": "/imagenspoderes/finalflash.jpeg"
+    "imagem": "/imagenspoderes/finalflash.jpg"
   },
   {
     "id": 7,
@@ -88,7 +88,7 @@
     "personagem": "Gon Freecss",
     "anime": "Hunter x Hunter",
     "descricao": "Aura de Nen concentrada no punho através de Reforço com carga lenta e impacto sísmico devastador.",
-    "imagem": "/imagenspoderes/jajaken.jpeg"
+    "imagem": "/imagenspoderes/jajaken.jpg"
   },
   {
     "id": 8,
@@ -101,7 +101,7 @@
     "personagem": "Hisoka Morow",
     "anime": "Hunter x Hunter",
     "descricao": "Possui propriedades tanto de borracha quanto de chiclete. Altamente elástica, gruda e controla os oponentes.",
-    "imagem": "/imagenspoderes/bungeegum.jpeg"
+    "imagem": "/imagenspoderes/bungeegum.jpg"
   },
   {
     "id": 9,
@@ -114,7 +114,7 @@
     "personagem": "Tanjiro Kamado",
     "anime": "Demon Slayer",
     "descricao": "Dança ancestral da Respiração Solar. Transforma o fôlego em lâminas cintilantes de chamas eternas.",
-    "imagem": "/imagenspoderes/kagura.jpeg"
+    "imagem": "/imagenspoderes/kagura.jpg"
   },
   {
     "id": 10,
@@ -140,7 +140,7 @@
     "personagem": "Jotaro Kujo",
     "anime": "JoJo's Bizarre Adventure",
     "descricao": "Sequência de socos supersônicos com precisão microscópica desferidos pelo Stand mais implacável do mundo.",
-    "imagem": "/imagenspoderes/oraora.jpeg"
+    "imagem": "/imagenspoderes/oraora.jpg"
   },
   {
     "id": 12,
@@ -153,7 +153,7 @@
     "personagem": "DIO",
     "anime": "JoJo's Bizarre Adventure",
     "descricao": "Interrompe o fluxo do próprio tempo por segundos sagrados, tornando o usuário invulnerável e onipresente.",
-    "imagem": "/imagenspoderes/zawarudo.jpeg"
+    "imagem": "/imagenspoderes/zawarudo.jpg"
   },
   {
     "id": 13,
@@ -192,7 +192,7 @@
     "personagem": "Frieren",
     "anime": "Frieren: Beyond Journey's End",
     "descricao": "Clarão mágico puro que cega inimigos, purifica magias sombrias e dissipa qualquer névoa ou ilusão de campo.",
-    "imagem": "/imagenspoderes/frieren.jpeg"
+    "imagem": "/imagenspoderes/frieren.jpg"
   },
   {
     "id": 16,
@@ -205,7 +205,7 @@
     "personagem": "Ryomen Sukuna",
     "anime": "Jujutsu Kaisen",
     "descricao": "Cria um domínio aberto onde lâminas invisíveis cortam incansavelmente tudo o que possui e não possui energia amaldiçoada.",
-    "imagem": "/imagenspoderes/sukunasantuario.jpeg"
+    "imagem": "/imagenspoderes/sukunasantuario.jpg"
   },
   {
     "id": 17,
@@ -218,7 +218,7 @@
     "personagem": "Satoru Gojo",
     "anime": "Jujutsu Kaisen",
     "descricao": "Inunda o cérebro do oponente com toda a informação infinita do cosmos, paralisando corpo e alma completamente.",
-    "imagem": "/imagenspoderes/vazioilimitado.jpeg"
+    "imagem": "/imagenspoderes/vazioilimitado.jpg"
   },
   {
     "id": 18,
@@ -231,7 +231,7 @@
     "personagem": "All Might",
     "anime": "My Hero Academia",
     "descricao": "Toda a herança de gerações do One For All canalizada em um soco colossal que altera a pressão atmosférica e clima.",
-    "imagem": "/imagenspoderes/smash.jpeg"
+    "imagem": "/imagenspoderes/smash.jpg"
   },
   {
     "id": 19,
@@ -244,7 +244,7 @@
     "personagem": "Sasuke Uchiha",
     "anime": "Naruto",
     "descricao": "Chamas negras inextinguíveis liberadas pelo Mangekyo Sharingan que ardem por sete dias e sete noites.",
-    "imagem": "/imagenspoderes/Amaterasu.jpeg"
+    "imagem": "/imagenspoderes/Amaterasu.jpg"
   },
   {
     "id": 20,
@@ -257,7 +257,7 @@
     "personagem": "Pain (Nagato)",
     "anime": "Naruto",
     "descricao": "Manipulação gravitacional suprema pelo Rinnegan capaz de varrer aldeias inteiras em uma única onda de repulsão.",
-    "imagem": "/imagenspoderes/Shinra Tensei .jpg"
+    "imagem": "/imagenspoderes/Shinra Tensei.jpg"
   },
   {
     "id": 21,
@@ -270,7 +270,7 @@
     "personagem": "Obito Uchiha",
     "anime": "Naruto",
     "descricao": "Torce o espaço-tempo para sugar alvos e o próprio corpo para outra dimensão inacessível com intangibilidade.",
-    "imagem": "/imagenspoderes/kamui.jpeg"
+    "imagem": "/imagenspoderes/kamui.jpg"
   },
   {
     "id": 22,
@@ -283,7 +283,7 @@
     "personagem": "Monkey D. Luffy",
     "anime": "One Piece",
     "descricao": "Despertar do Guerreiro da Libertação Sun God Nika. Punho gigante do tamanho de uma ilha revestido de Haki do Rei.",
-    "imagem": "/imagenspoderes/bajranggun.jpeg"
+    "imagem": "/imagenspoderes/bajranggun.jpg"
   },
   {
     "id": 23,
@@ -296,7 +296,7 @@
     "personagem": "Roronoa Zoro",
     "anime": "One Piece",
     "descricao": "Manifestação espiritual de nove espadas através da pura força de vontade e aura demoníaca do espadachim.",
-    "imagem": "/imagenspoderes/santoryu.jpeg"
+    "imagem": "/imagenspoderes/santoryu.jpg"
   },
   {
     "id": 24,
@@ -309,7 +309,7 @@
     "personagem": "Trafalgar D. Water Law",
     "anime": "One Piece",
     "descricao": "Cria um território cirúrgico onde matéria, corpos e ataques podem ser desmembrados e teletransportados à vontade.",
-    "imagem": "/imagenspoderes/opeope.jpeg"
+    "imagem": "/imagenspoderes/opeope.jpg"
   },
   {
     "id": 25,
@@ -322,7 +322,7 @@
     "personagem": "Vinsmoke Sanji",
     "anime": "One Piece",
     "descricao": "Atrito em velocidade extrema que incendeia as pernas com chamas incandescentes prontas para estilhaçar defesas.",
-    "imagem": "/imagenspoderes/diablejambe.jpeg"
+    "imagem": "/imagenspoderes/diablejambe.jpg"
   },
   {
     "id": 26,
@@ -335,7 +335,7 @@
     "personagem": "Son Goku",
     "anime": "Dragon Ball",
     "descricao": "Reúne a energia vital de todos os seres vivos do universo em uma esfera de bondade capaz de obliterar o mal.",
-    "imagem": "/imagenspoderes/genkidama.jpeg"
+    "imagem": "/imagenspoderes/genkidama.jpg"
   },
   {
     "id": 27,
@@ -348,7 +348,7 @@
     "personagem": "Bills (Lord Beerus)",
     "anime": "Dragon Ball",
     "descricao": "Poder sagrado dos Deuses da Destruição. Apaga completamente alvos físicos e espirituais do tecido da existência.",
-    "imagem": "/imagenspoderes/hakai.jpeg"
+    "imagem": "/imagenspoderes/hakai.jpg"
   },
   {
     "id": 28,
@@ -361,7 +361,7 @@
     "personagem": "Son Goku",
     "anime": "Dragon Ball",
     "descricao": "O corpo reage autonomamente a qualquer perigo e contra-ataca em milissegundos sem necessidade de pensamento consciente.",
-    "imagem": "/imagenspoderes/instintosuperior.jpeg"
+    "imagem": "/imagenspoderes/instintosuperior.jpg"
   },
   {
     "id": 29,
@@ -374,7 +374,7 @@
     "personagem": "Piccolo",
     "anime": "Dragon Ball",
     "descricao": "Dois dedos concentram Ki em espiral perfurante capaz de transpassar até mesmo as armaduras mais resistentes.",
-    "imagem": "/imagenspoderes/makankasappo.jpeg"
+    "imagem": "/imagenspoderes/makankasappo.jpg"
   },
   {
     "id": 30,
@@ -387,7 +387,7 @@
     "personagem": "Killua Zoldyck",
     "anime": "Hunter x Hunter",
     "descricao": "Transmuta a aura em impulsos elétricos nervosos diretos aos músculos, alcançando reflexos que ultrapassam a biologia humana.",
-    "imagem": "/imagenspoderes/kanmuru.jpeg"
+    "imagem": "/imagenspoderes/kanmuru.jpg"
   },
   {
     "id": 31,
@@ -400,7 +400,7 @@
     "personagem": "Isaac Netero",
     "anime": "Hunter x Hunter",
     "descricao": "Estátua titânica de cem mãos nascida de décadas de orações silenciosas. Desfere tapas que esmagam o próprio som.",
-    "imagem": "/imagenspoderes/netero.jpeg"
+    "imagem": "/imagenspoderes/netero.jpg"
   },
   {
     "id": 32,
@@ -413,7 +413,7 @@
     "personagem": "Zenitsu Agatsuma",
     "anime": "Demon Slayer",
     "descricao": "Avanço cegante em velocidade do relâmpago com desembainhar e corte perfeito num único piscar de olhos.",
-    "imagem": "/imagenspoderes/zenitsu.jpeg"
+    "imagem": "/imagenspoderes/zenitsu.jpg"
   },
   {
     "id": 33,
@@ -426,7 +426,7 @@
     "personagem": "Muichiro Tokito",
     "anime": "Demon Slayer",
     "descricao": "Alterna ritmos lentos e velocidades supersônicas, desorientando a visão do adversário como névoa densa.",
-    "imagem": "/imagenspoderes/kagura.jpeg"
+    "imagem": "/imagenspoderes/kagura.jpg"
   },
   {
     "id": 34,
@@ -439,7 +439,7 @@
     "personagem": "Diavolo",
     "anime": "JoJo's Bizarre Adventure",
     "descricao": "Apaga até 10 segundos do tempo enquanto prevê o futuro imediato, deixando apenas as consequências a seu favor.",
-    "imagem": "/imagenspoderes/zawarudo.jpeg"
+    "imagem": "/imagenspoderes/zawarudo.jpg"
   },
   {
     "id": 35,
@@ -452,7 +452,7 @@
     "personagem": "Giorno Giovanna",
     "anime": "JoJo's Bizarre Adventure",
     "descricao": "Retorna qualquer ataque, vontade ou causalidade ao ponto zero, prendendo inimigos em um ciclo infinito de fim nulo.",
-    "imagem": "/imagenspoderes/Goldexperience.jpeg"
+    "imagem": "/imagenspoderes/Goldexperience.jpg"
   },
   {
     "id": 36,
@@ -465,7 +465,7 @@
     "personagem": "Ichigo Kurosaki",
     "anime": "Bleach",
     "descricao": "Ao se fundir com o próprio Getsuga, o usuário se torna uma lâmina viva de escuridão absoluta que rasga a dimensão.",
-    "imagem": "/imagenspoderes/mugetsufinal.jpeg"
+    "imagem": "/imagenspoderes/mugetsufinal.jpg"
   },
   {
     "id": 37,
@@ -478,7 +478,7 @@
     "personagem": "Sosuke Aizen",
     "anime": "Bleach",
     "descricao": "Controla os cinco sentidos de quem testemunha o ritual de liberação, tecendo ilusões indistinguíveis da realidade.",
-    "imagem": "/imagenspoderes/kyoka.jpeg"
+    "imagem": "/imagenspoderes/kyoka.jpg"
   },
   {
     "id": 38,
@@ -491,7 +491,7 @@
     "personagem": "Satoru Gojo",
     "anime": "Jujutsu Kaisen",
     "descricao": "Colide a atração do Azul com a repulsão do Vermelho, gerando uma singularidade imaginária que apaga matéria por onde passa.",
-    "imagem": "/imagenspoderes/vazioroxo.jpeg"
+    "imagem": "/imagenspoderes/vazioroxo.jpg"
   },
   {
     "id": 39,
@@ -504,7 +504,7 @@
     "personagem": "Yuji Itadori",
     "anime": "Jujutsu Kaisen",
     "descricao": "Distorção espacial que ocorre quando a energia amaldiçoada é aplicada em 0.000001 segundos após o impacto físico, elevando o golpe à potência de 2.5.",
-    "imagem": "/imagenspoderes/furianegra.jpeg"
+    "imagem": "/imagenspoderes/furianegra.jpg"
   },
   {
     "id": 40,
@@ -517,7 +517,7 @@
     "personagem": "Endeavor",
     "anime": "My Hero Academia",
     "descricao": "Feixe térmico contínuo em temperatura nuclear que vaporiza tecidos e regenerações monstruosas instantaneamente.",
-    "imagem": "/imagenspoderes/prominennce.jpeg"
+    "imagem": "/imagenspoderes/prominennce.jpg"
   },
   {
     "id": 41,
@@ -530,7 +530,7 @@
     "personagem": "Tomura Shigaraki",
     "anime": "My Hero Academia",
     "descricao": "Tudo o que os cinco dedos tocam se desfaz em pó em reação em cadeia que se espalha por quarteirões inteiros.",
-    "imagem": "/imagenspoderes/decay.jpeg"
+    "imagem": "/imagenspoderes/decay.jpg"
   },
   {
     "id": 42,
@@ -543,7 +543,7 @@
     "personagem": "Eren Yeager",
     "anime": "Attack on Titan",
     "descricao": "Comanda as vontades através dos Caminhos e liberta fúria titânica incontrolável na busca incessante pela liberdade.",
-    "imagem": "/imagenspoderes/titafundador.jpeg"
+    "imagem": "/imagenspoderes/titafundador.jpg"
   },
   {
     "id": 43,
@@ -556,7 +556,7 @@
     "personagem": "Armin Arlert",
     "anime": "Attack on Titan",
     "descricao": "Transformação titânica equivalente a uma detonação tática de vapor e fogo com raio de aniquilação colossal.",
-    "imagem": "/imagenspoderes/titacolossal.jpeg"
+    "imagem": "/imagenspoderes/titacolossal.jpg"
   },
   {
     "id": 44,
@@ -569,7 +569,7 @@
     "personagem": "Sung Jin-woo",
     "anime": "Solo Leveling",
     "descricao": "Extrai as almas de guerreiros e monstros caídos em batalha, transformando-os em um exército imortal leal ao Monarca das Sombras.",
-    "imagem": "/imagenspoderes/arise.jpeg"
+    "imagem": "/imagenspoderes/arise.jpg"
   },
   {
     "id": 45,
@@ -582,7 +582,7 @@
     "personagem": "Sung Jin-woo",
     "anime": "Solo Leveling",
     "descricao": "Telecinese invisível primordial que arremessa inimigos, projéteis e estruturas pesadas pelo campo sem tocar em nada.",
-    "imagem": "/imagenspoderes/autoridadedogovernante.jpeg"
+    "imagem": "/imagenspoderes/autoridadedogovernante.jpg"
   },
   {
     "id": 46,
@@ -595,7 +595,7 @@
     "personagem": "Yami Sukehiro",
     "anime": "Black Clover",
     "descricao": "Imbui a katana com Magia da Escuridão reforçada para fender literalmente as dimensões e o próprio espaço.",
-    "imagem": "/imagenspoderes/cortedimensional.jpeg"
+    "imagem": "/imagenspoderes/cortedimensional.jpg"
   },
   {
     "id": 47,
@@ -608,7 +608,7 @@
     "personagem": "Asta",
     "anime": "Black Clover",
     "descricao": "Espada negra sem mana capaz de cortar, rebater e anular qualquer feitiço cósmico ou elemental com força bruta.",
-    "imagem": "/imagenspoderes/antimagia.jpeg"
+    "imagem": "/imagenspoderes/antimagia.jpg"
   },
   {
     "id": 48,
@@ -621,7 +621,7 @@
     "personagem": "Roy Mustang",
     "anime": "Fullmetal Alchemist: Brotherhood",
     "descricao": "Estalar de dedos com luvas de ignição que ajusta a densidade de oxigênio no ar e guia explosões milimétricas precisas.",
-    "imagem": "/imagenspoderes/alquimiadaschamas.jpeg"
+    "imagem": "/imagenspoderes/alquimiadaschamas.jpg"
   },
   {
     "id": 49,
@@ -634,7 +634,7 @@
     "personagem": "Edward Elric",
     "anime": "Fullmetal Alchemist: Brotherhood",
     "descricao": "Bater de palmas que acessa a Verdade do Portão, transmutando matéria sólida instantaneamente em lâminas, canhões e lanças.",
-    "imagem": "/imagenspoderes/semcirculo.jpeg"
+    "imagem": "/imagenspoderes/semcirculo.jpg"
   },
   {
     "id": 50,
@@ -647,7 +647,7 @@
     "personagem": "Saitama",
     "anime": "One Punch Man",
     "descricao": "Um soco direto com seriedade que parte nuvens em escala continental e anula ataques capazes de destruir estrelas.",
-    "imagem": "/imagenspoderes/seriouspunch.jpeg"
+    "imagem": "/imagenspoderes/seriouspunch.jpg"
   },
   {
     "id": 51,
@@ -660,7 +660,7 @@
     "personagem": "Bang (Silver Fang)",
     "anime": "One Punch Man",
     "descricao": "Arte marcial defensiva suprema que desvia golpes inimigos com a suavidade da água e contra-ataca com a dureza da pedra.",
-    "imagem": "/imagenspoderes/punhodeagua.jpeg"
+    "imagem": "/imagenspoderes/punhodeagua.jpg"
   },
   {
     "id": 52,
@@ -673,7 +673,7 @@
     "personagem": "Shigeo Kageyama (Mob)",
     "anime": "Mob Psycho 100",
     "descricao": "Quando a contenção emocional colapsa, liberta telecinese colossal capaz de reconstruir ou despedaçar cidades inteiras.",
-    "imagem": "/imagenspoderes/explosaopsiquica.jpeg"
+    "imagem": "/imagenspoderes/explosaopsiquica.jpg"
   },
   {
     "id": 53,
@@ -686,7 +686,7 @@
     "personagem": "Frieren",
     "anime": "Frieren: Beyond Journey's End",
     "descricao": "Feixe perfurante de mana concentrada desenvolvido especificamente para penetrar defesas mágicas e aniquilar o núcleo demoníaco.",
-    "imagem": "/imagenspoderes/zoltraak.jpeg"
+    "imagem": "/imagenspoderes/zoltraak.jpg"
   },
   {
     "id": 54,
@@ -699,6 +699,6 @@
     "personagem": "Denji / Pochita",
     "anime": "Chainsaw Man",
     "descricao": "Lâminas de motosserra brotam da cabeça e membros com sede insaciável de sangue e poder para devorar conceitos da história.",
-    "imagem": "/imagenspoderes/chainsaw.jpeg"
+    "imagem": "/imagenspoderes/chainsaw.jpg"
   }
 ]

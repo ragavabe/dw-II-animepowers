@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import powersData from '../data/powers.json';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { getElementalMultiplier, getElementalRelation, getPlayerAffinityBonus } from '../data/elementalAffinities';
+import { narrarBatalha, analisarDuelo } from '../services/geminiService';
 
 function baseScore(p) {
   return p.dano * 0.7 + (100 - p.custo) * 0.3 + Math.random() * 10;
@@ -28,13 +29,18 @@ export default function DuelSimulator() {
   const [resultado, setResultado] = useState(null);
   const [historico, setHistorico] = useLocalStorage('pa:duelos', []);
   const [playerAffinity] = useLocalStorage('pa:afinidade', null);
+  const [narracao, setNarracao] = useState(null);
+  const [analise, setAnalise] = useState(null);
+  const [loadingNarracao, setLoadingNarracao] = useState(false);
+  const [loadingAnalise, setLoadingAnalise] = useState(false);
+  const [erroIA, setErroIA] = useState(null);
 
   const powerA = useMemo(() => powersData.find((p) => p.id === Number(idA)), [idA]);
   const powerB = useMemo(() => powersData.find((p) => p.id === Number(idB)), [idB]);
 
   const userAffinity = playerAffinity?.elemento || null;
 
-  function lutar() {
+  async function lutar() {
     if (!powerA || !powerB) return;
     if (powerA.id === powerB.id) {
       setResultado({ erro: 'Escolha dois poderes diferentes para duelar.' });
@@ -67,7 +73,7 @@ export default function DuelSimulator() {
       afinidadeJogador: userAffinity
     };
 
-    setResultado({
+    const novoResultado = {
       sA: resultA.score,
       sB: resultB.score,
       vencedor,
@@ -84,9 +90,42 @@ export default function DuelSimulator() {
         ...(elementalRelationB !== 'neutro' ? [`⚡ ${powerB.nome} tem ${elementalRelationB === 'vantagem' ? 'vantagem' : 'desvantagem'} elemental!`] : []),
         ...(userAffinity ? [`🔮 Sua afinidade (${userAffinity}) ativada!`] : [])
       ]
-    });
+    };
+
+    setResultado(novoResultado);
+    setNarracao(null);
+    setAnalise(null);
+    setErroIA(null);
     setHistorico((h) => [entry, ...h].slice(0, 20));
+
+    // Narrar batalha com Gemini automaticamente
+    setLoadingNarracao(true);
+    try {
+      const texto = await narrarBatalha(powerA, powerB, novoResultado);
+      setNarracao(texto);
+    } catch (err) {
+      console.error('[Gemini narrarBatalha]', err);
+      setErroIA(`Erro da IA: ${err?.message || err}`);
+    } finally {
+      setLoadingNarracao(false);
+    }
   }
+
+  const handleAnalisarDuelo = useCallback(async () => {
+    if (!powerA || !powerB) return;
+    setLoadingAnalise(true);
+    setAnalise(null);
+    setErroIA(null);
+    try {
+      const texto = await analisarDuelo(powerA, powerB);
+      setAnalise(texto);
+    } catch (err) {
+      console.error('[Gemini analisarDuelo]', err);
+      setErroIA(`Erro da IA: ${err?.message || err}`);
+    } finally {
+      setLoadingAnalise(false);
+    }
+  }, [powerA, powerB]);
 
   function getRelationLabel(relation) {
     switch (relation) {
@@ -174,14 +213,41 @@ export default function DuelSimulator() {
         </div>
       </div>
 
-      <div className="btn-row" style={{ marginTop: '1.2rem' }}>
+      <div className="btn-row" style={{ marginTop: '1.2rem', flexWrap: 'wrap', gap: '0.7rem' }}>
         <button onClick={lutar} style={{ fontSize: '1rem', padding: '0.7rem 1.4rem' }}>
           ⚔️ Iniciar Duelo de Anime
         </button>
-        <button className="ghost" onClick={() => setResultado(null)}>
+        <button
+          className="ghost"
+          onClick={handleAnalisarDuelo}
+          disabled={loadingAnalise}
+          style={{ position: 'relative' }}
+        >
+          {loadingAnalise ? '🤖 Analisando...' : '🤖 Análise da IA (pré-duelo)'}
+        </button>
+        <button className="ghost" onClick={() => { setResultado(null); setNarracao(null); setAnalise(null); setErroIA(null); }}>
           Limpar
         </button>
       </div>
+
+      {analise && (
+        <div className="card" style={{
+          marginTop: '1rem',
+          background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(168,85,247,0.1))',
+          border: '1px solid rgba(168,85,247,0.4)',
+          borderRadius: '12px',
+          padding: '1rem 1.2rem'
+        }}>
+          <strong style={{ color: '#a855f7', display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.5rem' }}>
+            🤖 Análise Estratégica da IA (Gemini)
+          </strong>
+          <p style={{ margin: 0, lineHeight: 1.7, whiteSpace: 'pre-wrap', fontSize: '0.9rem' }}>{analise}</p>
+        </div>
+      )}
+
+      {erroIA && (
+        <p role="alert" style={{ color: '#ff8296', marginTop: 8, fontSize: '0.88rem' }}>⚠️ {erroIA}</p>
+      )}
 
       {resultado?.erro && <p role="alert" style={{ color: '#ff8296', marginTop: 10 }}>{resultado.erro}</p>}
 
@@ -239,6 +305,39 @@ export default function DuelSimulator() {
           <p className="muted" style={{ fontSize: '0.8rem', marginTop: 8 }}>
             Fórmula: (Dano × 0.7 + (100 − Custo) × 0.3 + Aleatório 0–10) × Multiplicador Elemental × Bônus de Afinidade
           </p>
+
+          {/* Narração épica da IA */}
+          {loadingNarracao && (
+            <div style={{
+              marginTop: '1.2rem',
+              padding: '1rem',
+              background: 'rgba(251,191,36,0.08)',
+              border: '1px solid rgba(251,191,36,0.3)',
+              borderRadius: '10px',
+              textAlign: 'center',
+              animation: 'pulse 1.5s ease-in-out infinite'
+            }}>
+              <span style={{ fontSize: '1.2rem' }}>🤖</span>
+              <p style={{ margin: '0.3rem 0 0', fontSize: '0.88rem', color: '#fbbf24' }}>
+                O Gemini está narrando a batalha...
+              </p>
+            </div>
+          )}
+
+          {narracao && !loadingNarracao && (
+            <div style={{
+              marginTop: '1.2rem',
+              padding: '1.2rem',
+              background: 'linear-gradient(135deg, rgba(251,191,36,0.08), rgba(249,115,22,0.08))',
+              border: '1px solid rgba(251,191,36,0.35)',
+              borderRadius: '12px'
+            }}>
+              <strong style={{ color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.7rem' }}>
+                ✨ Narração Épica — Gemini AI
+              </strong>
+              <p style={{ margin: 0, lineHeight: 1.8, whiteSpace: 'pre-wrap', fontSize: '0.92rem' }}>{narracao}</p>
+            </div>
+          )}
         </div>
       )}
 

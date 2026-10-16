@@ -41,6 +41,9 @@
   gap: 0.75rem;
 }
 
+/* o select de elemento tinge o próprio texto com a cor do filtro */
+.select[class*='el-'] { color: var(--element); border-color: color-mix(in oklch, var(--element) 45%, var(--line)); }
+
 .switch {
   display: inline-flex;
   align-items: center;
@@ -80,8 +83,6 @@
 .switch input:checked::after { transform: translateX(14px); background: var(--black); }
 
 /* faixa de valor duplo */
-.range { display: grid; gap: 0.4rem; }
-
 .range__track { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 
 .range__slider { display: grid; gap: 0.3rem; }
@@ -168,14 +169,3 @@ input[type='range']::-moz-range-thumb {
 }
 
 /* faixa de rodapé do catálogo */
-.catalog__foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--line);
-  font-size: 0.8125rem;
-  color: var(--muted);
-}

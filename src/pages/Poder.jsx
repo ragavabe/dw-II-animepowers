@@ -169,7 +169,7 @@ export default function Poder() {
             <div className="spec">
               <div className="spec__row">
                 <span className="spec__label">Elemento</span>
-                <span className={`spec__value ${elementClass(power.elemento)}`} style={{ color: 'var(--element)' }}>
+                <span className={`spec__value ${elementClass(power.elemento)}`}>
                   {power.elemento}
                 </span>
               </div>

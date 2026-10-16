@@ -24,7 +24,7 @@
 }
 
 .duel-side--b {
-  grid-column: 9 / -1;
+  grid-column: 8 / -1;
   grid-template-columns: 1fr;
 }
 

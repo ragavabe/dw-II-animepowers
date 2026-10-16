@@ -10,9 +10,9 @@ export const ELEMENT_COLORS = {
   Vento: 'oklch(72% 0.135 168)',
   Trovão: 'oklch(76% 0.155 88)',
   Luz: 'oklch(84% 0.135 96)',
-  Sombra: 'oklch(56% 0.155 300)',
-  Espaço: 'oklch(60% 0.155 268)',
-  Tempo: 'oklch(62% 0.175 322)',
+  Sombra: 'oklch(62% 0.16 300)',
+  Espaço: 'oklch(62% 0.155 268)',
+  Tempo: 'oklch(63% 0.175 322)',
   Físico: 'oklch(66% 0.185 8)',
   Terra: 'oklch(64% 0.105 62)',
   Energia: 'oklch(72% 0.125 202)'

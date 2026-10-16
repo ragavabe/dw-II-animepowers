@@ -138,8 +138,6 @@
   flex-shrink: 0;
 }
 
-.tag--plain::before { display: none; }
-
 .chip {
   display: inline-flex;
   align-items: center;
@@ -202,8 +200,6 @@ a.chip:hover {
 .empty-state__text { color: var(--muted); max-width: 44ch; }
 
 /* ---------------------------------------------------- trilho horizontal */
-.rail-wrap { position: relative; }
-
 .rail {
   display: flex;
   gap: var(--rail-gap, 0.75rem);
@@ -373,8 +369,6 @@ a.chip:hover {
   border-top: 1px solid var(--line);
 }
 
-.stats--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-
 .stat { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
 
 .stat + .stat {
@@ -428,8 +422,6 @@ a.index-row:hover { background: var(--surface-1); padding-inline: 0.75rem; }
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-.index-row__meta { font-size: 0.8125rem; color: var(--muted); }
 
 .index-row__count {
   display: inline-flex;

@@ -9,12 +9,6 @@
   padding-inline: var(--gutter);
 }
 
-.shell--narrow { max-width: 1120px; }
-
-.page {
-  padding-block: clamp(2rem, 6vw, 4.5rem) clamp(4rem, 10vw, 8rem);
-}
-
 main { padding-bottom: clamp(3rem, 8vw, 6rem); }
 
 /* cabeçalho do site + cabeçalho de página */

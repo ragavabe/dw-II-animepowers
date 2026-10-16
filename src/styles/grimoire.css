@@ -69,6 +69,30 @@
 /* -------------------------------------------------------- lista do arquivo */
 .codex__list { display: grid; gap: 0; }
 
+/* cabeçalho de coluna — só leitura, some no mobile */
+.codex__listhead {
+  display: grid;
+  grid-template-columns: auto 64px minmax(0, 1fr) auto auto;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  padding-bottom: 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.codex__listhead span:nth-child(3),
+.codex__listhead span:nth-child(4),
+.codex__listhead span:nth-child(5) { text-align: right; }
+
+.codex__listhead span:nth-child(4),
+.codex__listhead span:nth-child(5) { padding-right: 0.4rem; }
+
+@media (max-width: 760px) {
+  .codex__listhead { display: none; }
+}
+
 .codex__entry {
   display: grid;
   grid-template-columns: auto 64px minmax(0, 1fr) auto auto;
@@ -139,8 +163,6 @@
 }
 
 /* ----------------------------------------------------- lista de Seleção */
-.codex__picker { display: grid; gap: 0; }
-
 .codex__picker-head {
   display: flex;
   flex-wrap: wrap;

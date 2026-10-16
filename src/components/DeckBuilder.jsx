@@ -122,7 +122,16 @@ export default function DeckBuilder() {
             </Link>
           </div>
         ) : (
-          <div className="codex__list">
+          <>
+            <div className="codex__listhead" aria-hidden="true">
+              <span />
+              <span>Técnica</span>
+              <span>Elemento</span>
+              <span>Dano</span>
+              <span>Custo</span>
+              <span />
+            </div>
+            <div className="codex__list">
             {deckPowers.map((p, i) => (
               <article className="codex__entry" key={p.id}>
                 <span className="index-mark">{String(i + 1).padStart(2, '0')}</span>
@@ -165,6 +174,7 @@ export default function DeckBuilder() {
               </article>
             ))}
           </div>
+          </>
         )}
       </section>
 

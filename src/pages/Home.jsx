@@ -222,6 +222,18 @@ export default function Home() {
                 </Link>
               </li>
             ))}
+
+            {/* fecha a última linha da grade de 12 células */}
+            <li data-reveal style={{ '--reveal-i': 3 }}>
+              <Link className="element-tile element-tile--all" to="/catalogo">
+                <span className="element-tile__name">Ver tudo</span>
+                <span className="element-tile__ratio">
+                  <span className="element-tile__count">{powersData.length} técnicas</span>
+                  <ArrowUpRight size={14} />
+                </span>
+                <span aria-hidden="true" />
+              </Link>
+            </li>
           </ul>
         </div>
       </section>

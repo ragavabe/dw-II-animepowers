@@ -58,8 +58,28 @@
   --font-ui: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* ------------------------------------------------------------------ reset */
-*,
+/* ============================================================================
+   ELEMENTOS
+   Fonte única de verdade: src/data/elementMeta.js (ELEMENT_COLORS).
+   A rampa mantém luminosidade e croma constantes e varia só o matiz —
+   assim o catálogo ganha cor sem virar arco-íris.
+   A cor é publicada em --element e usada por .tag, .spec__value e gráficos.
+   ============================================================================ */
+
+.el-fogo    { --element: oklch(66% 0.185 34); }
+.el-agua    { --element: oklch(68% 0.135 232); }
+.el-vento   { --element: oklch(72% 0.135 168); }
+.el-trovao  { --element: oklch(76% 0.155 88); }
+.el-luz     { --element: oklch(84% 0.135 96); }
+.el-sombra  { --element: oklch(62% 0.16 300); }
+.el-espaco  { --element: oklch(62% 0.155 268); }
+.el-tempo   { --element: oklch(63% 0.175 322); }
+.el-fisico  { --element: oklch(66% 0.185 8); }
+.el-terra   { --element: oklch(64% 0.105 62); }
+.el-energia { --element: oklch(72% 0.125 202); }
+.el-neutro  { --element: oklch(72% 0.02 0); }
+
+/* ------------------------------------------------------------------ reset */*,
 *::before,
 *::after { box-sizing: border-box; }
 
@@ -129,11 +149,9 @@ h1, h2, h3, h4, h5, h6 { font-weight: 500; line-height: 1.15; }
   text-wrap: balance;
 }
 
-.d-xxl { font-size: clamp(3.25rem, 12.5vw, 10rem); }
 .d-xl  { font-size: clamp(2.75rem, 8vw, 6rem); }
 .d-lg  { font-size: clamp(2.25rem, 5vw, 3.75rem); }
 .d-md  { font-size: clamp(1.75rem, 3vw, 2.5rem); line-height: 0.98; }
-.d-sm  { font-size: clamp(1.25rem, 1.8vw, 1.6rem); line-height: 1; }
 
 .lede {
   font-size: clamp(1.05rem, 1.5vw, 1.3rem);

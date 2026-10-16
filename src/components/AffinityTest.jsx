@@ -66,7 +66,7 @@ export default function AffinityTest() {
             ))}
           </fieldset>
         ))}
-        {erro && <p role="alert" style={{ color: '#ff8296' }}>{erro}</p>}
+        {erro && <p role="alert" className="alert-text">{erro}</p>}
         <button type="submit">Revelar afinidade</button>
       </form>
     </div>

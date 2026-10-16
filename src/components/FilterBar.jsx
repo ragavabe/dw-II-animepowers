@@ -69,64 +69,72 @@ export default function FilterBar({
 
       <div className="filter-row filter-range-row">
         <div className="range-filter">
-          <label htmlFor="dano-min">
-            Dano: {danoRange[0]}–{danoRange[1]}
-          </label>
+          <label htmlFor="dano-min">Dano</label>
           <div className="range-inputs">
-            <input
-              id="dano-min"
-              type="range"
-              min={MIN_DANO}
-              max={MAX_DANO}
-              value={danoRange[0]}
-              onChange={(e) => {
-                const val = Number(e.target.value);
-                setDanoRange([Math.min(val, danoRange[1]), danoRange[1]]);
-              }}
-              aria-label="Dano mínimo"
-            />
-            <input
-              type="range"
-              min={MIN_DANO}
-              max={MAX_DANO}
-              value={danoRange[1]}
-              onChange={(e) => {
-                const val = Number(e.target.value);
-                setDanoRange([danoRange[0], Math.max(val, danoRange[0])]);
-              }}
-              aria-label="Dano máximo"
-            />
+            <div className="range-input">
+              <input
+                id="dano-min"
+                type="range"
+                min={MIN_DANO}
+                max={MAX_DANO}
+                value={danoRange[0]}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  setDanoRange([Math.min(val, danoRange[1]), danoRange[1]]);
+                }}
+                aria-label="Dano mínimo"
+              />
+              <span className="range-bound">mín {danoRange[0]}</span>
+            </div>
+            <div className="range-input">
+              <input
+                type="range"
+                min={MIN_DANO}
+                max={MAX_DANO}
+                value={danoRange[1]}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  setDanoRange([danoRange[0], Math.max(val, danoRange[0])]);
+                }}
+                aria-label="Dano máximo"
+              />
+              <span className="range-bound">máx {danoRange[1]}</span>
+            </div>
           </div>
         </div>
 
         <div className="range-filter">
-          <label htmlFor="custo-min">
-            Custo: {custoRange[0]}–{custoRange[1]}
-          </label>
+          <label htmlFor="custo-min">Custo</label>
           <div className="range-inputs">
-            <input
-              id="custo-min"
-              type="range"
-              min={MIN_CUSTO}
-              max={MAX_CUSTO}
-              value={custoRange[0]}
-              onChange={(e) => {
-                const val = Number(e.target.value);
-                setCustoRange([Math.min(val, custoRange[1]), custoRange[1]]);
-              }}
-              aria-label="Custo mínimo"
-            />
-            <input
-              type="range"
-              min={MIN_CUSTO}
-              max={MAX_CUSTO}
-              value={custoRange[1]}
-              onChange={(e) => {
-                const val = Number(e.target.value);
-                setCustoRange([custoRange[0], Math.max(val, custoRange[0])]);
-              }}
-              aria-label="Custo máximo"
-            />
+            <div className="range-input">
+              <input
+                id="custo-min"
+                type="range"
+                min={MIN_CUSTO}
+                max={MAX_CUSTO}
+                value={custoRange[0]}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  setCustoRange([Math.min(val, custoRange[1]), custoRange[1]]);
+                }}
+                aria-label="Custo mínimo"
+              />
+              <span className="range-bound">mín {custoRange[0]}</span>
+            </div>
+            <div className="range-input">
+              <input
+                type="range"
+                min={MIN_CUSTO}
+                max={MAX_CUSTO}
+                value={custoRange[1]}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  setCustoRange([custoRange[0], Math.max(val, custoRange[0])]);
+                }}
+                aria-label="Custo máximo"
+              />
+              <span className="range-bound">máx {custoRange[1]}</span>
+            </div>
           </div>
         </div>
       </div>

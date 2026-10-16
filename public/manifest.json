@@ -4,8 +4,8 @@
   "description": "Explore 54+ poderes de anime, simule duelos com afinidades elementais, monte seu grimório e descubra sua afinidade elemental!",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0b0e1a",
-  "theme_color": "#0b0e1a",
+  "background_color": "#0a0b0f",
+  "theme_color": "#0a0b0f",
   "orientation": "portrait-primary",
   "icons": [
     {

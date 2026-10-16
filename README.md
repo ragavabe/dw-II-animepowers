@@ -13,7 +13,7 @@ Tema: **Poderes de Anime** (Ninjutsu, Akuma no Mi, Nen, Ki, Feitiços, Respiraç
 - Linguagens: JavaScript (ES2022), HTML5, CSS3
 - Framework: React 18/19 + Vite 5/8
 - Roteamento: `react-router-dom` com `HashRouter` (compatível com GitHub Pages)
-- Estilo: CSS3 puro com variáveis (tema anime/cyberpunk/fantasy), Grid + Flex, responsivo
+- Estilo: CSS3 puro com variáveis — paleta grafite com um único destaque (vermelho queimado) e cores elementais restritas a detalhes pequenos; Grid + Flex, responsivo
 - Persistência: LocalStorage (`pa:favoritos`, `pa:deck`, `pa:duelos`, `pa:afinidade`)
 - Dados: Mock JSON em `src/data/powers.json` (54+ poderes)
 - Deploy: `gh-pages` + GitHub Actions (build estático em `dist/`)
@@ -36,7 +36,7 @@ Tema: **Poderes de Anime** (Ninjutsu, Akuma no Mi, Nen, Ki, Feitiços, Respiraç
 **RF3 — Módulo interativo:** Grimório + Duelo + Afinidade → `DeckBuilder.jsx`, `DuelSimulator.jsx`, `AffinityTest.jsx`.
 **RF4 — Persistência local:** favoritos/decks salvos em LocalStorage → `src/hooks/useLocalStorage.js`.
 
-**RNF1 — Responsividade:** Grid `repeat(auto-fill,minmax(250px,1fr))`, breakpoint 720px, header sticky, testado em DevTools mobile.
+**RNF1 — Responsividade:** Grid `repeat(auto-fill,minmax(210px,1fr))`, breakpoints 900px/820px/720px/480px, header sticky, testado em DevTools mobile.
 **RNF2 — Desempenho:** `useMemo` na filtragem, debounce, bundle Vite otimizado, sem dependência pesada (sem Tailwind runtime).
 **RNF3 — Usabilidade/Acessibilidade:** labels/`aria-*`, foco visível, navegação por teclado, `role=status/alert` em vazio/erro.
 **RNF4 — Segurança/Estabilidade:** validação (quiz incompleto, duelo igual, deck duplicado/limite, JSON inválido), try/catch no LocalStorage, rota `*` → Home.

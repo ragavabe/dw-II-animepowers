@@ -28,7 +28,7 @@ export default function App() {
           </Routes>
         </main>
         <footer>
-          Anime Powers — trabalho acadêmico front-end 100% estático • React + Vite • dados mock em JSON • favoritos no LocalStorage
+          Anime Powers — catálogo de técnicas de anime com duel, grimório e teste de afinidade.
         </footer>
       </HashRouter>
     </AuthProvider>

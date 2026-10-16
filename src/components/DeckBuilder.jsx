@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import powersData from '../data/powers.json';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { elementClass } from '../data/elementMeta';
 
 const MAX = 6;
 
@@ -52,9 +53,7 @@ export default function DeckBuilder() {
 
   return (
     <div>
-      <p className="muted">Monte seu grimório com até {MAX} poderes. Salvo automaticamente no banco local.</p>
-
-      <div className="card deck-summary-card">
+      <div className="deck-summary-card card">
         <div className="deck-summary-header">
           <strong>Seu Grimório Ativo ({deck.length}/{MAX})</strong>
           <span className="deck-stats-badges">
@@ -64,7 +63,7 @@ export default function DeckBuilder() {
         </div>
 
         {deckPowers.length === 0 ? (
-          <p className="muted" style={{ margin: '1rem 0' }}>Vazio. Adicione poderes da lista abaixo para equipar seu arsenal.</p>
+          <p className="muted">Vazio. Equipe poderes da lista abaixo para montar seu arsenal.</p>
         ) : (
           <div className="deck-items-grid">
             {deckPowers.map((p) => (
@@ -82,43 +81,38 @@ export default function DeckBuilder() {
           </div>
         )}
 
-        <div className="btn-row" style={{ marginTop: '1rem' }}>
+        <div className="btn-row">
           <button className="ghost" onClick={() => setDeck([])} disabled={deck.length === 0}>Limpar deck</button>
           <button className="ghost" onClick={exportar} disabled={deck.length === 0}>Exportar JSON</button>
         </div>
       </div>
 
-      {msg && <p role="status" style={{ color: '#ffd27c', margin: '0.8rem 0' }}>{msg}</p>}
+      {msg && <p role="status" className="form-status">{msg}</p>}
 
-      <h3 style={{ marginTop: '2rem' }}>Adicionar ao Grimório ({powersData.length} disponíveis)</h3>
-      <ul className="grid">
+      <h3 className="section-title">Equipar técnicas ({powersData.length} disponíveis)</h3>
+      <ul className="deck-add-grid">
         {powersData.map((p) => (
           <li key={p.id} className="card deck-add-card">
             <div className="deck-card-thumb-wrap">
               <img src={p.imagem} alt={p.nome} className="deck-card-thumb" loading="lazy" />
-              <span className="deck-card-element">{p.elemento}</span>
+              <span className={`deck-card-element ${elementClass(p.elemento)}`}>{p.elemento}</span>
             </div>
-            <div style={{ flex: 1 }}>
-              <strong style={{ display: 'block', fontSize: '0.95rem' }}>{p.nome}</strong>
-              <small className="muted">{p.categoria} • {p.anime}</small>
-              <div style={{ display: 'flex', gap: '0.3rem', marginTop: '0.3rem' }}>
-                <span className="stat" style={{ fontSize: '0.75rem', padding: '0.15rem 0.4rem' }}>💥 {p.dano}</span>
-                <span className="stat" style={{ fontSize: '0.75rem', padding: '0.15rem 0.4rem' }}>⚡ {p.custo}</span>
+            <div className="deck-add-info">
+              <strong>{p.nome}</strong>
+              <small className="muted">{p.personagem} · {p.anime}</small>
+              <div className="deck-add-stats">
+                <span className="card-stat"><span className="card-stat-label">Dano</span><span className="card-stat-value stat-dano">{p.dano}</span></span>
+                <span className="card-stat"><span className="card-stat-label">Custo</span><span className="card-stat-value stat-custo">{p.custo}</span></span>
               </div>
             </div>
-            <button
-              className="ghost"
-              onClick={() => add(p.id)}
-              disabled={deck.includes(p.id)}
-              style={{ marginTop: '0.4rem' }}
-            >
-              {deck.includes(p.id) ? 'No grimório ✓' : '+ Equipar'}
+            <button className="ghost" onClick={() => add(p.id)} disabled={deck.includes(p.id)}>
+              {deck.includes(p.id) ? 'Equipado ✓' : '+ Equipar'}
             </button>
           </li>
         ))}
       </ul>
 
-      <h3 style={{ marginTop: '2rem' }}>Importar deck</h3>
+      <h3 className="section-title">Importar grimório</h3>
       <div className="toolbar">
         <input
           type="text"

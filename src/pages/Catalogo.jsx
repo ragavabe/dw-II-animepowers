@@ -2,9 +2,12 @@ import PowerCatalog from '../components/PowerCatalog';
 
 export default function Catalogo() {
   return (
-    <div>
+    <div className="page-head">
       <h1>Catálogo de Poderes</h1>
-      <p className="muted">Busque em tempo real, filtre por categoria e favorite. Clique em “Ver detalhes” para atributos completos.</p>
+      <p className="muted">
+        Busque por nome, personagem ou anime e filtre por categoria, elemento, dano e custo.
+        Abra um card para ver a técnica completa.
+      </p>
       <PowerCatalog />
     </div>
   );

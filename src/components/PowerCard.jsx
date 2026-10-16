@@ -1,44 +1,10 @@
-import React from 'react';
-
-// Imagens padrão de fallback temáticas de acordo com o elemento
-const ELEMENT_FALLBACKS = {
-  Fogo: 'https://images.unsplash.com/photo-1525909002-1b05e0c869d8?w=600&auto=format&fit=crop&q=80',
-  Água: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=600&auto=format&fit=crop&q=80',
-  Vento: 'https://images.unsplash.com/photo-1522383225653-ed111181a951?w=600&auto=format&fit=crop&q=80',
-  Trovão: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80',
-  Luz: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&auto=format&fit=crop&q=80',
-  Sombra: 'https://images.unsplash.com/photo-1514539079130-25950c84af65?w=600&auto=format&fit=crop&q=80',
-  Espaço: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&auto=format&fit=crop&q=80',
-  Tempo: 'https://images.unsplash.com/photo-1501139083538-0139583c060f?w=600&auto=format&fit=crop&q=80',
-  Físico: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&auto=format&fit=crop&q=80',
-  Terra: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&auto=format&fit=crop&q=80',
-  Energia: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop&q=80'
-};
-
-// Cores de glow por elemento
-const ELEMENT_GLOW = {
-  Fogo: 'rgba(239, 68, 68, 0.6)',
-  Água: 'rgba(14, 165, 233, 0.6)',
-  Vento: 'rgba(16, 185, 129, 0.6)',
-  Trovão: 'rgba(245, 158, 11, 0.6)',
-  Luz: 'rgba(234, 179, 8, 0.6)',
-  Sombra: 'rgba(88, 28, 135, 0.6)',
-  Espaço: 'rgba(99, 102, 241, 0.6)',
-  Tempo: 'rgba(168, 85, 247, 0.6)',
-  Físico: 'rgba(225, 29, 72, 0.6)',
-  Terra: 'rgba(120, 53, 15, 0.6)',
-  Energia: 'rgba(6, 182, 212, 0.6)'
-};
+import { elementClass, elementImageFallback } from '../data/elementMeta';
 
 export default function PowerCard({ power, isFav, onFav, onDetails }) {
-  const fallback = ELEMENT_FALLBACKS[power.elemento] || ELEMENT_FALLBACKS.Energia;
-  const glowColor = ELEMENT_GLOW[power.elemento] || ELEMENT_GLOW.Energia;
-  const cardStyle = {
-    boxShadow: `0 0 0 1px ${glowColor}, 0 8px 32px ${glowColor.replace('0.6', '0.3')}`
-  };
+  const fallback = elementImageFallback(power.elemento);
 
   return (
-    <li className="card power-card-item" style={cardStyle}>
+    <li className="card power-card-item">
       <div className="card-media-wrapper" onClick={() => onDetails(power)}>
         <img
           src={power.imagem || fallback}
@@ -51,7 +17,8 @@ export default function PowerCard({ power, isFav, onFav, onDetails }) {
           }}
         />
         <div className="card-media-overlay" />
-        <span className={`card-element-pill element-${power.elemento?.toLowerCase() || 'default'}`}>
+        <span className="card-media-cta" aria-hidden="true">Ver detalhes</span>
+        <span className={`card-element-pill ${elementClass(power.elemento)}`}>
           {power.elemento}
         </span>
         <button
@@ -69,30 +36,29 @@ export default function PowerCard({ power, isFav, onFav, onDetails }) {
       </div>
 
       <div className="card-body">
-        <header>
-          <strong className="card-title" onClick={() => onDetails(power)} title={power.nome}>
-            {power.nome}
-          </strong>
-        </header>
+        <button className="card-title-btn" onClick={() => onDetails(power)}>
+          <span className="card-title">{power.nome}</span>
+        </button>
 
         <div className="card-meta">
-          <span className="card-category-tag">{power.categoria}</span>
-          <span className="card-anime-tag">{power.anime}</span>
+          <span className="card-char">{power.personagem}</span>
+          <span className="card-anime-tag">{power.anime} · {power.categoria}</span>
         </div>
 
         <div className="card-stats-row">
-          <span className="stat stat-dano" title="Poder de Dano">💥 {power.dano}</span>
-          <span className="stat stat-alcance" title="Alcance">{power.alcance}</span>
-          <span className="stat stat-custo" title="Custo de Energia">⚡ {power.custo}</span>
+          <span className="card-stat" title="Poder de dano">
+            <span className="card-stat-label">Dano</span>
+            <span className="card-stat-value stat-dano">{power.dano}</span>
+          </span>
+          <span className="card-stat" title="Alcance">
+            <span className="card-stat-label">Alc.</span>
+            <span className="card-stat-value">{power.alcance}</span>
+          </span>
+          <span className="card-stat" title="Custo de energia">
+            <span className="card-stat-label">Custo</span>
+            <span className="card-stat-value stat-custo">{power.custo}</span>
+          </span>
         </div>
-
-        <p className="char" title="Personagem Usuário">
-          <span className="char-icon">👤</span> {power.personagem}
-        </p>
-
-        <button className="ghost card-details-btn" onClick={() => onDetails(power)}>
-          Ver detalhes
-        </button>
       </div>
     </li>
   );

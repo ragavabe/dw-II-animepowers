@@ -2,6 +2,7 @@ import { useMemo, useState, useCallback } from 'react';
 import powersData from '../data/powers.json';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { getElementalMultiplier, getElementalRelation, getPlayerAffinityBonus } from '../data/elementalAffinities';
+import { elementClass } from '../data/elementMeta';
 import { narrarBatalha, analisarDuelo } from '../services/geminiService';
 
 function baseScore(p) {
@@ -23,9 +24,15 @@ function calculateFinalScore(power, opponentElement, playerAffinity) {
   return { score, elementalMultiplier, affinityBonus };
 }
 
-export default function DuelSimulator() {
-  const [idA, setIdA] = useState(powersData[4].id);
-  const [idB, setIdB] = useState(powersData[0].id);
+export default function DuelSimulator({ initialPowerId = null }) {
+  const preselect = powersData.some((p) => p.id === Number(initialPowerId))
+    ? Number(initialPowerId)
+    : null;
+
+  const [idA, setIdA] = useState(preselect ?? powersData[4].id);
+  const [idB, setIdB] = useState(
+    preselect === null || preselect !== powersData[0].id ? powersData[0].id : powersData[5].id
+  );
   const [resultado, setResultado] = useState(null);
   const [historico, setHistorico] = useLocalStorage('pa:duelos', []);
   const [playerAffinity] = useLocalStorage('pa:afinidade', null);
@@ -137,9 +144,9 @@ export default function DuelSimulator() {
 
   function getRelationColor(relation) {
     switch (relation) {
-      case 'vantagem': return '#3ddc84';
-      case 'desvantagem': return '#ff5470';
-      default: return '#aab1d6';
+      case 'vantagem': return 'var(--ok)';
+      case 'desvantagem': return 'var(--danger)';
+      default: return 'var(--muted)';
     }
   }
 
@@ -152,16 +159,12 @@ export default function DuelSimulator() {
               <img src={powerA.imagem} alt={powerA.nome} className="duel-fighter-img" />
               <div className="duel-fighter-overlay" />
               <span className="duel-fighter-tag">Lutador 1</span>
-              <span className={`element-badge element-${powerA.elemento?.toLowerCase()}`}>{powerA.elemento}</span>
+              <span className={`element-badge ${elementClass(powerA.elemento)}`}>{powerA.elemento}</span>
             </div>
           )}
-          <label style={{ display: 'block', marginTop: '0.4rem', padding: '0 1rem' }}>
+          <label className="duel-picker">
             <strong>Escolha a Habilidade</strong>
-            <select
-              value={idA}
-              onChange={(e) => setIdA(e.target.value)}
-              style={{ width: '100%', marginTop: 6 }}
-            >
+            <select value={idA} onChange={(e) => setIdA(e.target.value)}>
               {powersData.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.nome} — {p.personagem} ({p.anime}) [{p.elemento}]
@@ -170,11 +173,11 @@ export default function DuelSimulator() {
             </select>
           </label>
           {powerA && (
-            <div className="duel-stats-summary" style={{ padding: '0 1rem 1rem' }}>
+            <div className="duel-stats-summary">
               <span className="stat">💥 Dano {powerA.dano}</span>
               <span className="stat">⚡ Custo {powerA.custo}</span>
-              <span className="stat">{powerA.elemento}</span>
-              <p className="char" style={{ marginTop: 6 }}>{powerA.personagem} ({powerA.anime})</p>
+              <span className={`stat ${elementClass(powerA.elemento)}`}>{powerA.elemento}</span>
+              <p className="char">{powerA.personagem} ({powerA.anime})</p>
             </div>
           )}
         </div>
@@ -185,16 +188,12 @@ export default function DuelSimulator() {
               <img src={powerB.imagem} alt={powerB.nome} className="duel-fighter-img" />
               <div className="duel-fighter-overlay" />
               <span className="duel-fighter-tag">Lutador 2</span>
-              <span className={`element-badge element-${powerB.elemento?.toLowerCase()}`}>{powerB.elemento}</span>
+              <span className={`element-badge ${elementClass(powerB.elemento)}`}>{powerB.elemento}</span>
             </div>
           )}
-          <label style={{ display: 'block', marginTop: '0.4rem', padding: '0 1rem' }}>
+          <label className="duel-picker">
             <strong>Escolha a Habilidade</strong>
-            <select
-              value={idB}
-              onChange={(e) => setIdB(e.target.value)}
-              style={{ width: '100%', marginTop: 6 }}
-            >
+            <select value={idB} onChange={(e) => setIdB(e.target.value)}>
               {powersData.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.nome} — {p.personagem} ({p.anime}) [{p.elemento}]
@@ -203,26 +202,19 @@ export default function DuelSimulator() {
             </select>
           </label>
           {powerB && (
-            <div className="duel-stats-summary" style={{ padding: '0 1rem 1rem' }}>
+            <div className="duel-stats-summary">
               <span className="stat">💥 Dano {powerB.dano}</span>
               <span className="stat">⚡ Custo {powerB.custo}</span>
-              <span className="stat">{powerB.elemento}</span>
-              <p className="char" style={{ marginTop: 6 }}>{powerB.personagem} ({powerB.anime})</p>
+              <span className={`stat ${elementClass(powerB.elemento)}`}>{powerB.elemento}</span>
+              <p className="char">{powerB.personagem} ({powerB.anime})</p>
             </div>
           )}
         </div>
       </div>
 
-      <div className="btn-row" style={{ marginTop: '1.2rem', flexWrap: 'wrap', gap: '0.7rem' }}>
-        <button onClick={lutar} style={{ fontSize: '1rem', padding: '0.7rem 1.4rem' }}>
-          ⚔️ Iniciar Duelo de Anime
-        </button>
-        <button
-          className="ghost"
-          onClick={handleAnalisarDuelo}
-          disabled={loadingAnalise}
-          style={{ position: 'relative' }}
-        >
+      <div className="btn-row">
+        <button className="btn-primary" onClick={lutar}>⚔️ Iniciar Duelo de Anime</button>
+        <button className="ghost" onClick={handleAnalisarDuelo} disabled={loadingAnalise}>
           {loadingAnalise ? '🤖 Analisando...' : '🤖 Análise da IA (pré-duelo)'}
         </button>
         <button className="ghost" onClick={() => { setResultado(null); setNarracao(null); setAnalise(null); setErroIA(null); }}>
@@ -231,28 +223,20 @@ export default function DuelSimulator() {
       </div>
 
       {analise && (
-        <div className="card" style={{
-          marginTop: '1rem',
-          background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(168,85,247,0.1))',
-          border: '1px solid rgba(168,85,247,0.4)',
-          borderRadius: '12px',
-          padding: '1rem 1.2rem'
-        }}>
-          <strong style={{ color: '#a855f7', display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.5rem' }}>
-            🤖 Análise Estratégica da IA (Gemini)
-          </strong>
-          <p style={{ margin: 0, lineHeight: 1.7, whiteSpace: 'pre-wrap', fontSize: '0.9rem' }}>{analise}</p>
+        <div className="card ai-panel">
+          <strong className="ai-panel-title">🤖 Análise Estratégica da IA (Gemini)</strong>
+          <p className="ai-panel-text">{analise}</p>
         </div>
       )}
 
       {erroIA && (
-        <p role="alert" style={{ color: '#ff8296', marginTop: 8, fontSize: '0.88rem' }}>⚠️ {erroIA}</p>
+        <p role="alert" className="alert-text">⚠️ {erroIA}</p>
       )}
 
-      {resultado?.erro && <p role="alert" style={{ color: '#ff8296', marginTop: 10 }}>{resultado.erro}</p>}
+      {resultado?.erro && <p role="alert" className="alert-text">{resultado.erro}</p>}
 
       {resultado && !resultado.erro && (
-        <div className="card duel-result-card" style={{ marginTop: '1.5rem' }}>
+        <div className="card duel-result-card duel-result">
           <div className="duel-winner-header">
             {resultado.vencedor.imagem && (
               <img
@@ -263,24 +247,24 @@ export default function DuelSimulator() {
             )}
             <div>
               <span className="duel-trophy-badge">🏆 VENCEDOR DO CONFRONTO</span>
-              <h2 style={{ margin: '0.2rem 0' }}>{resultado.vencedor.nome}</h2>
-              <p className="muted" style={{ margin: 0 }}>
+              <h2 className="duel-winner-name">{resultado.vencedor.nome}</h2>
+              <p className="muted">
                 {resultado.vencedor.personagem} • {resultado.vencedor.anime} ({resultado.vencedor.categoria})
               </p>
             </div>
           </div>
 
-          <div className="duel-bars" style={{ marginTop: '1rem' }}>
-            <div style={{ marginBottom: 8 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', marginBottom: 4 }}>
+          <div className="duel-bars">
+            <div className="duel-bar">
+              <div className="duel-bar-head">
                 <span>{powerA.nome} <span style={{ color: getRelationColor(resultado.elementalRelationA) }}>{getRelationLabel(resultado.elementalRelationA)}</span></span>
                 <span>{resultado.hpA}%</span>
               </div>
               <div className="hp"><div style={{ width: `${resultado.hpA}%` }} /></div>
             </div>
 
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', marginBottom: 4 }}>
+            <div className="duel-bar">
+              <div className="duel-bar-head">
                 <span>{powerB.nome} <span style={{ color: getRelationColor(resultado.elementalRelationB) }}>{getRelationLabel(resultado.elementalRelationB)}</span></span>
                 <span>{resultado.hpB}%</span>
               </div>
@@ -289,9 +273,9 @@ export default function DuelSimulator() {
           </div>
 
           {(resultado.affinityEffectsA.length > 0 || resultado.affinityEffectsB.length > 0) && (
-            <div className="affinity-effects" style={{ marginTop: '1rem', padding: '0.75rem', background: 'rgba(124, 92, 255, 0.1)', borderRadius: '8px', border: '1px solid var(--accent2)' }}>
-              <strong style={{ color: 'var(--accent2)' }}>🔮 Efeitos de Afinidade do Jogador:</strong>
-              <ul style={{ margin: '0.5rem 0 0', paddingLeft: '1.2rem', fontSize: '0.85rem' }}>
+            <div className="affinity-effects affinity-panel">
+              <strong className="affinity-panel-title">🔮 Efeitos de Afinidade do Jogador</strong>
+              <ul>
                 {resultado.affinityEffectsA.map((e, i) => (
                   <li key={`a-${i}`}><strong>{powerA.nome}:</strong> {e}</li>
                 ))}
@@ -302,55 +286,36 @@ export default function DuelSimulator() {
             </div>
           )}
 
-          <p className="muted" style={{ fontSize: '0.8rem', marginTop: 8 }}>
+          <p className="duel-formula">
             Fórmula: (Dano × 0.7 + (100 − Custo) × 0.3 + Aleatório 0–10) × Multiplicador Elemental × Bônus de Afinidade
           </p>
 
           {/* Narração épica da IA */}
           {loadingNarracao && (
-            <div style={{
-              marginTop: '1.2rem',
-              padding: '1rem',
-              background: 'rgba(251,191,36,0.08)',
-              border: '1px solid rgba(251,191,36,0.3)',
-              borderRadius: '10px',
-              textAlign: 'center',
-              animation: 'pulse 1.5s ease-in-out infinite'
-            }}>
-              <span style={{ fontSize: '1.2rem' }}>🤖</span>
-              <p style={{ margin: '0.3rem 0 0', fontSize: '0.88rem', color: '#fbbf24' }}>
-                O Gemini está narrando a batalha...
-              </p>
+            <div className="narrative-panel">
+              <span className="narrative-panel-title">🤖 O Gemini está narrando a batalha…</span>
             </div>
           )}
 
           {narracao && !loadingNarracao && (
-            <div style={{
-              marginTop: '1.2rem',
-              padding: '1.2rem',
-              background: 'linear-gradient(135deg, rgba(251,191,36,0.08), rgba(249,115,22,0.08))',
-              border: '1px solid rgba(251,191,36,0.35)',
-              borderRadius: '12px'
-            }}>
-              <strong style={{ color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.7rem' }}>
-                ✨ Narração Épica — Gemini AI
-              </strong>
-              <p style={{ margin: 0, lineHeight: 1.8, whiteSpace: 'pre-wrap', fontSize: '0.92rem' }}>{narracao}</p>
+            <div className="narrative-panel">
+              <strong className="narrative-panel-title">✨ Narração Épica — Gemini AI</strong>
+              <p className="narrative-panel-text">{narracao}</p>
             </div>
           )}
         </div>
       )}
 
       {userAffinity && (
-        <div className="card" style={{ marginTop: '1.5rem', borderColor: 'var(--accent2)' }}>
-          <strong style={{ color: 'var(--accent2)' }}>🔮 Sua Afinidade Elemental: {userAffinity}</strong>
-          <p className="muted" style={{ marginTop: 4 }}>
+        <div className="card affinity-card">
+          <strong className="affinity-panel-title">🔮 Sua Afinidade Elemental: {userAffinity}</strong>
+          <p className="muted">
             Poderes do elemento {userAffinity} recebem bônus especiais em duelos!
           </p>
         </div>
       )}
 
-      <h3 style={{ marginTop: '2rem' }}>Histórico de Duelos ({historico.length})</h3>
+      <h3 className="section-title">Histórico de Duelos ({historico.length})</h3>
       {historico.length === 0 ? (
         <p className="muted">Nenhum duelo ainda. O histórico fica salvo no banco local do navegador.</p>
       ) : (
@@ -362,12 +327,12 @@ export default function DuelSimulator() {
               <span className="duel-log-winner">→ 🏆 {h.vencedor}</span>
               <span className="duel-log-score">({h.placar})</span>
               {h.vantagemA !== 'neutro' && (
-                <span className="duel-log-affinity" style={{ color: h.vantagemA === 'vantagem' ? '#3ddc84' : '#ff5470', fontSize: '0.75rem', marginLeft: '0.5rem' }}>
+                <span className="duel-log-affinity" style={{ color: getRelationColor(h.vantagemA) }}>
                   {h.vantagemA === 'vantagem' ? '✅' : '❌'} {h.a}
                 </span>
               )}
               {h.vantagemB !== 'neutro' && (
-                <span className="duel-log-affinity" style={{ color: h.vantagemB === 'vantagem' ? '#3ddc84' : '#ff5470', fontSize: '0.75rem', marginLeft: '0.5rem' }}>
+                <span className="duel-log-affinity" style={{ color: getRelationColor(h.vantagemB) }}>
                   {h.vantagemB === 'vantagem' ? '✅' : '❌'} {h.b}
                 </span>
               )}

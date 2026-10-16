@@ -2,19 +2,32 @@ import { useMemo, useState } from 'react';
 import powersData from '../data/powers.json';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useDebounce } from '../hooks/useDebounce';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import SearchBar from './SearchBar';
-import FilterBar, { MIN_DANO, MAX_DANO, MIN_CUSTO, MAX_CUSTO } from './FilterBar';
+import FilterBar, {
+  CATEGORIAS, ANIMES, ELEMENTOS, MIN_DANO, MAX_DANO, MIN_CUSTO, MAX_CUSTO
+} from './FilterBar';
 import PowerCard from './PowerCard';
 import PowerModal from './PowerModal';
 import EmptyState from './EmptyState';
 
 export default function PowerCatalog() {
   const navigate = useNavigate();
-  const [busca, setBusca] = useState('');
-  const [categoria, setCategoria] = useState('Todas');
-  const [anime, setAnime] = useState('Todos');
-  const [elemento, setElemento] = useState('Todos');
+  const [searchParams] = useSearchParams();
+  const paramCategoria = searchParams.get('categoria');
+  const paramAnime = searchParams.get('anime');
+  const paramElemento = searchParams.get('elemento');
+
+  const [busca, setBusca] = useState(searchParams.get('q') || '');
+  const [categoria, setCategoria] = useState(
+    CATEGORIAS.includes(paramCategoria) ? paramCategoria : 'Todas'
+  );
+  const [anime, setAnime] = useState(
+    ANIMES.includes(paramAnime) ? paramAnime : 'Todos'
+  );
+  const [elemento, setElemento] = useState(
+    ELEMENTOS.includes(paramElemento) ? paramElemento : 'Todos'
+  );
   const [danoRange, setDanoRange] = useState([MIN_DANO, MAX_DANO]);
   const [custoRange, setCustoRange] = useState([MIN_CUSTO, MAX_CUSTO]);
   const [somenteFavs, setSomenteFavs] = useState(false);

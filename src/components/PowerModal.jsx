@@ -1,4 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 const ELEMENT_FALLBACKS = {
   Fogo: 'https://images.unsplash.com/photo-1525909002-1b05e0c869d8?w=800&auto=format&fit=crop&q=80',
@@ -14,7 +16,13 @@ const ELEMENT_FALLBACKS = {
   Energia: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800&auto=format&fit=crop&q=80'
 };
 
-export default function PowerModal({ power, isFav, onFav, onClose }) {
+const MAX_DECK = 6;
+
+export default function PowerModal({ power, isFav, onFav, onClose, onAddToDeck, onTestInDuel, inDeck }) {
+  const navigate = useNavigate();
+  const [deck, setDeck] = useLocalStorage('pa:deck', []);
+  const [msg, setMsg] = useState('');
+
   useEffect(() => {
     function onKey(e) {
       if (e.key === 'Escape') onClose();
@@ -26,6 +34,30 @@ export default function PowerModal({ power, isFav, onFav, onClose }) {
   if (!power) return null;
 
   const fallback = ELEMENT_FALLBACKS[power.elemento] || ELEMENT_FALLBACKS.Energia;
+
+  function handleAddToDeck() {
+    if (deck.includes(power.id)) {
+      setMsg('Este poder já está no grimório.');
+      return;
+    }
+    if (deck.length >= MAX_DECK) {
+      setShowDeckFull(true);
+      setMsg(`Limite de ${MAX_DECK} poderes atingido. Remova um para adicionar.`);
+      return;
+    }
+    setDeck([...deck, power.id]);
+    setMsg(`"${power.nome}" adicionado ao Grimório!`);
+    if (onAddToDeck) onAddToDeck(power.id);
+  }
+
+  function handleTestInDuel() {
+    onClose();
+    if (onTestInDuel) {
+      onTestInDuel(power.id);
+    } else {
+      navigate('/duelo', { state: { preselectPower: power.id } });
+    }
+  }
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
@@ -113,10 +145,22 @@ export default function PowerModal({ power, isFav, onFav, onClose }) {
 
           <div className="modal-actions">
             <button onClick={() => onFav(power.id)}>
-              {isFav ? '★ Remover do Grimório Favorito' : '☆ Adicionar aos Favoritos'}
+              {isFav ? '★ Remover dos Favoritos' : '☆ Adicionar aos Favoritos'}
+            </button>
+            <button onClick={handleAddToDeck} disabled={inDeck || deck.length >= MAX_DECK} style={{ marginRight: '0.5rem' }}>
+              {inDeck ? '✓ No Grimório' : deck.length >= MAX_DECK ? 'Grimório Cheio' : '+ Adicionar ao Grimório'}
+            </button>
+            <button onClick={handleTestInDuel} style={{ marginRight: '0.5rem' }}>
+              ⚔️ Testar no Duelo
             </button>
             <button className="ghost" onClick={onClose}>Fechar (ESC)</button>
           </div>
+
+          {msg && (
+            <p role="status" style={{ color: '#ffd27c', marginTop: '0.5rem', fontSize: '0.85rem', textAlign: 'center' }}>
+              {msg}
+            </p>
+          )}
         </div>
       </div>
     </div>

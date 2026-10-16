@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
+import powersData from '../data/powers.json';
 
 export default function Home() {
+  const totalPowers = powersData.length;
+
   return (
     <div className="hero">
       <div className="badges">
@@ -11,7 +14,7 @@ export default function Home() {
       </div>
       <h1>Anime Powers — Catálogo e Simulador</h1>
       <p>
-        Explore 18 poderes de anime com atributos padronizados (dano, alcance, elemento, custo),
+        Explore {totalPowers} poderes de anime com atributos padronizados (dano, alcance, elemento, custo),
         favorite os melhores, monte seu grimório de 6 técnicas, simule duelos e descubra sua
         afinidade elemental. Tudo roda no navegador, sem backend.
       </p>

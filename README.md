@@ -5,7 +5,7 @@ Tema: **Poderes de Anime** (Ninjutsu, Akuma no Mi, Nen, Ki, Feitiços, Respiraç
 ## 1. Visão Geral
 **Objetivo:** catalogar habilidades de animes e permitir simulação lúdica de duelos, montagem de grimório/deck e descoberta de afinidade elemental.
 
-**Problema resolvido:** informações sobre poderes ficam dispersas em wikis/fóruns, sem comparação padronizada (dano, alcance, custo, elemento). O app centraliza 18 poderes com atributos uniformes e interações práticas.
+**Problema resolvido:** informações sobre poderes ficam dispersas em wikis/fóruns, sem comparação padronizada (dano, alcance, custo, elemento). O app centraliza 54+ poderes com atributos uniformes e interações práticas.
 
 **Público-alvo:** fãs de anime, estudantes de desenvolvimento web e avaliadores acadêmicos.
 
@@ -15,7 +15,7 @@ Tema: **Poderes de Anime** (Ninjutsu, Akuma no Mi, Nen, Ki, Feitiços, Respiraç
 - Roteamento: `react-router-dom` com `HashRouter` (compatível com GitHub Pages)
 - Estilo: CSS3 puro com variáveis (tema anime/cyberpunk/fantasy), Grid + Flex, responsivo
 - Persistência: LocalStorage (`pa:favoritos`, `pa:deck`, `pa:duelos`, `pa:afinidade`)
-- Dados: Mock JSON em `src/data/powers.json` (18 poderes)
+- Dados: Mock JSON em `src/data/powers.json` (54+ poderes)
 - Deploy: `gh-pages` + GitHub Actions (build estático em `dist/`)
 - Ferramentas: Node 20+, npm, VS Code, Git
 

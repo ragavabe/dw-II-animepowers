@@ -15,11 +15,30 @@ const ELEMENT_FALLBACKS = {
   Energia: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop&q=80'
 };
 
+// Cores de glow por elemento
+const ELEMENT_GLOW = {
+  Fogo: 'rgba(239, 68, 68, 0.6)',
+  Água: 'rgba(14, 165, 233, 0.6)',
+  Vento: 'rgba(16, 185, 129, 0.6)',
+  Trovão: 'rgba(245, 158, 11, 0.6)',
+  Luz: 'rgba(234, 179, 8, 0.6)',
+  Sombra: 'rgba(88, 28, 135, 0.6)',
+  Espaço: 'rgba(99, 102, 241, 0.6)',
+  Tempo: 'rgba(168, 85, 247, 0.6)',
+  Físico: 'rgba(225, 29, 72, 0.6)',
+  Terra: 'rgba(120, 53, 15, 0.6)',
+  Energia: 'rgba(6, 182, 212, 0.6)'
+};
+
 export default function PowerCard({ power, isFav, onFav, onDetails }) {
   const fallback = ELEMENT_FALLBACKS[power.elemento] || ELEMENT_FALLBACKS.Energia;
+  const glowColor = ELEMENT_GLOW[power.elemento] || ELEMENT_GLOW.Energia;
+  const cardStyle = {
+    boxShadow: `0 0 0 1px ${glowColor}, 0 8px 32px ${glowColor.replace('0.6', '0.3')}`
+  };
 
   return (
-    <li className="card power-card-item">
+    <li className="card power-card-item" style={cardStyle}>
       <div className="card-media-wrapper" onClick={() => onDetails(power)}>
         <img
           src={power.imagem || fallback}

@@ -85,6 +85,121 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 .check { display: flex; align-items: center; gap: 0.4rem; color: var(--muted); }
 
+/* Filter Bar Enhanced */
+.filter-bar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.filter-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.filter-row select {
+  flex: 1;
+  min-width: 140px;
+}
+
+.filter-range-row {
+  align-items: flex-end;
+}
+
+.range-filter {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.range-filter label {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.range-inputs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.range-inputs input[type="range"] {
+  flex: 1;
+  min-width: 0;
+  appearance: none;
+  background: #0f1430;
+  border: 1px solid #343e77;
+  border-radius: 6px;
+  height: 6px;
+  cursor: pointer;
+}
+
+.range-inputs input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 4px rgba(255, 46, 136, 0.5);
+}
+
+.range-inputs input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid var(--bg);
+}
+
+.filter-actions {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-actions select {
+  min-width: 180px;
+  flex-shrink: 0;
+}
+
+.filter-actions .check {
+  flex-shrink: 0;
+}
+
+.filter-actions button {
+  flex-shrink: 0;
+}
+
+@media (max-width: 720px) {
+  .filter-row select {
+    min-width: 100%;
+  }
+
+  .range-filter {
+    min-width: 100%;
+  }
+
+  .filter-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-actions select {
+    width: 100%;
+  }
+
+  .filter-actions button {
+    width: 100%;
+  }
+}
+
 /* Grid cards */
 .grid {
   list-style: none; padding: 0; margin: 0;
@@ -217,6 +332,118 @@ footer { color: var(--muted); text-align: center; padding: 2rem 1rem; font-size:
 .header-logout-btn:hover {
   background: #ff5470;
   color: #ffffff;
+}
+
+/* Hamburger Menu & Mobile Navigation */
+.hamburger-btn {
+  display: none;
+  background: transparent;
+  border: 1px solid #3a457f;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  font-size: 1.25rem;
+  cursor: pointer;
+  z-index: 20;
+  transition: all 0.2s ease;
+}
+
+.hamburger-btn:hover {
+  background: #241b3d;
+  border-color: var(--accent);
+}
+
+@media (max-width: 480px) {
+  .hamburger-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .topbar-inner nav {
+    display: none !important;
+  }
+
+  .mobile-menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 15;
+    animation: fadeIn 0.2s ease;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 85vw;
+    background: var(--bg2);
+    border-left: 1px solid #2b3563;
+    z-index: 16;
+    padding: 5rem 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    animation: slideIn 0.3s ease;
+    overflow-y: auto;
+  }
+
+  .mobile-menu a,
+  .mobile-menu button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.9rem 1rem;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid #2b3563;
+    color: var(--text);
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-menu a.active,
+  .mobile-menu a:hover,
+  .mobile-menu button:hover {
+    background: #241b3d;
+    border-color: var(--accent);
+    color: var(--cyan);
+  }
+
+  .mobile-user-menu {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #2b3563;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .mobile-auth-links {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #2b3563;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .mobile-auth-links a {
+    text-align: center;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }
 
 /* ========================================================
@@ -655,6 +882,50 @@ footer { color: var(--muted); text-align: center; padding: 2rem 1rem; font-size:
 .duel-log-score {
   color: var(--muted);
   font-size: 0.85rem;
+}
+
+.duel-fighter-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--accent);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+
+.element-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.element-fogo { background: rgba(239, 68, 68, 0.9); color: #fff; border: 1px solid #f87171; }
+.element-água { background: rgba(14, 165, 233, 0.9); color: #fff; border: 1px solid #38bdf8; }
+.element-vento { background: rgba(16, 185, 129, 0.9); color: #fff; border: 1px solid #34d399; }
+.element-trovão { background: rgba(245, 158, 11, 0.9); color: #fff; border: 1px solid #fbbf24; }
+.element-luz { background: rgba(234, 179, 8, 0.9); color: #111; border: 1px solid #fef08a; font-weight: 800; }
+.element-sombra { background: rgba(88, 28, 135, 0.9); color: #fff; border: 1px solid #c084fc; }
+.element-espaço { background: rgba(99, 102, 241, 0.9); color: #fff; border: 1px solid #818cf8; }
+.element-tempo { background: rgba(168, 85, 247, 0.9); color: #fff; border: 1px solid #d8b4fe; }
+.element-físico { background: rgba(225, 29, 72, 0.9); color: #fff; border: 1px solid #fb7185; }
+.element-terra { background: rgba(120, 53, 15, 0.9); color: #fff; border: 1px solid #d97706; }
+.element-energia { background: rgba(6, 182, 212, 0.9); color: #fff; border: 1px solid #22d3ee; }
+
+.affinity-effects ul li {
+  margin: 0.25rem 0;
 }
 
 /* ========================================================

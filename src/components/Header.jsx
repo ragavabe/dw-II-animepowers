@@ -1,140 +1,150 @@
 import { NavLink, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-const NAV_LINKS = [
-  { to: '/', label: 'Início' },
-  { to: '/catalogo', label: 'Catálogo' },
-  { to: '/duelo', label: 'Duelo' },
-  { to: '/grimorio', label: 'Grimório' },
-  { to: '/afinidade', label: 'Afinidade' },
+const NAV = [
+  { to: '/', label: 'Início', index: '01' },
+  { to: '/catalogo', label: 'Catálogo', index: '02' },
+  { to: '/duelo', label: 'Duelo', index: '03' },
+  { to: '/grimorio', label: 'Grimório', index: '04' },
+  { to: '/afinidade', label: 'Afinidade', index: '05' }
 ];
-
-function UserBadge({ currentUser }) {
-  return (
-    <div
-      className="header-user-badge"
-      title={`${currentUser.name} (${currentUser.email}) - ${currentUser.role || 'Usuário'}`}
-    >
-      {currentUser.avatar ? (
-        <img
-          src={currentUser.avatar}
-          alt={currentUser.name}
-          className="header-avatar-img"
-          onError={(e) => {
-            e.target.onerror = null;
-            e.target.style.display = 'none';
-          }}
-        />
-      ) : (
-        <span className="header-avatar-fallback">👤</span>
-      )}
-      <span className="header-user-name">{currentUser.name || currentUser.email.split('@')[0]}</span>
-    </div>
-  );
-}
 
 export default function Header() {
   const { currentUser, logout } = useAuth();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const fechar = () => setOpen(false);
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 480);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  function closeMobileMenu() {
-    setMobileMenuOpen(false);
-  }
+    document.body.dataset.locked = open ? 'true' : 'false';
+    return () => {
+      document.body.dataset.locked = 'false';
+    };
+  }, [open]);
 
   return (
     <>
-      <div className={`topbar${isMobile && mobileMenuOpen ? ' topbar-menu-open' : ''}`}>
-        <div className="topbar-inner">
+      <header className={`site-head${open ? ' is-open' : ''}`}>
+        <div className="shell site-head__bar">
           <Link to="/" className="brand">
-            ⚡ Anime <span>Powers</span>
+            Anime<span className="brand__dot" aria-hidden="true" />
+            Powers
           </Link>
 
-          {!isMobile && (
-            <nav aria-label="Navegação principal">
-              {NAV_LINKS.map((link) => (
-                <NavLink
-                  key={link.to}
-                  to={link.to}
-                  end={link.to === '/'}
-                  className={({ isActive }) => (isActive ? 'active' : '')}
-                >
-                  {link.label}
-                </NavLink>
-              ))}
-              {currentUser ? (
-                <div className="header-user-menu">
-                  <UserBadge currentUser={currentUser} />
-                  <button onClick={logout} className="header-logout-btn" title="Desconectar">
-                    Sair
-                  </button>
-                </div>
-              ) : (
-                <div className="header-auth-links">
-                  <NavLink to="/login" className={({ isActive }) => (isActive ? 'active nav-auth' : 'nav-auth')}>
-                    Entrar
-                  </NavLink>
-                  <NavLink to="/cadastro" className={({ isActive }) => (isActive ? 'active nav-signup' : 'nav-signup')}>
-                    Cadastre-se
-                  </NavLink>
-                </div>
-              )}
-            </nav>
-          )}
-
-          {isMobile && (
-            <button
-              className="hamburger-btn"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
-              aria-expanded={mobileMenuOpen}
-            >
-              {mobileMenuOpen ? '✕' : '☰'}
-            </button>
-          )}
-        </div>
-      </div>
-
-      {isMobile && mobileMenuOpen && (
-        <>
-          <div className="mobile-menu-overlay" onClick={closeMobileMenu} />
-          <nav className="mobile-menu" aria-label="Navegação mobile">
-            {NAV_LINKS.map((link) => (
+          <nav className="site-nav" aria-label="Navegação principal">
+            {NAV.map((item) => (
               <NavLink
-                key={link.to}
-                to={link.to}
-                end={link.to === '/'}
-                className={({ isActive }) => (isActive ? 'active' : '')}
-                onClick={closeMobileMenu}
+                key={item.to}
+                to={item.to}
+                end={item.to === '/'}
+                className={({ isActive }) => `site-nav__link${isActive ? ' is-active' : ''}`}
               >
-                {link.label}
+                {item.label}
               </NavLink>
             ))}
-            {currentUser ? (
-              <div className="mobile-user-menu">
-                <UserBadge currentUser={currentUser} />
-                <button onClick={() => { logout(); closeMobileMenu(); }} className="header-logout-btn" title="Desconectar">
-                  Sair
-                </button>
-              </div>
-            ) : (
-              <div className="mobile-auth-links">
-                <NavLink to="/login" className={({ isActive }) => (isActive ? 'active' : 'nav-auth')} onClick={closeMobileMenu}>
-                  Entrar
-                </NavLink>
-                <NavLink to="/cadastro" className={({ isActive }) => (isActive ? 'active nav-signup' : 'nav-signup')} onClick={closeMobileMenu}>
-                  Cadastre-se
-                </NavLink>
-              </div>
-            )}
+
+            <div className="site-nav__actions">
+              {currentUser ? (
+                <>
+                  <span className="user-chip" title={`${currentUser.email} — ${currentUser.role || 'usuário'}`}>
+                    {currentUser.avatar ? (
+                      <img
+                        src={currentUser.avatar}
+                        alt=""
+                        className="user-chip__avatar"
+                        onError={(e) => {
+                          e.currentTarget.style.visibility = 'hidden';
+                        }}
+                      />
+                    ) : (
+                      <span className="user-chip__avatar" aria-hidden="true" />
+                    )}
+                    <span className="user-chip__name">
+                      {currentUser.name || currentUser.email.split('@')[0]}
+                    </span>
+                  </span>
+                  <button
+                    type="button"
+                    className="btn btn--quiet"
+                    onClick={() => {
+                      logout();
+                      fechar();
+                    }}
+                  >
+                    Sair
+                  </button>
+                </>
+              ) : (
+                <>
+                  <NavLink to="/login" className="site-nav__link">
+                    Entrar
+                  </NavLink>
+                  <NavLink to="/cadastro" className="btn">
+                    Criar conta
+                  </NavLink>
+                </>
+              )}
+            </div>
+          </nav>
+
+          <button
+            type="button"
+            className="nav-toggle"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-label={open ? 'Fechar navegação' : 'Abrir navegação'}
+          >
+            <span className="nav-toggle__lines" />
+          </button>
+        </div>
+      </header>
+
+      {open && (
+        <>
+          <div className="nav-scrim" onClick={fechar} />
+          <nav className="nav-panel" aria-label="Navegação">
+            {NAV.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.to === '/'}
+                className={({ isActive }) => `nav-panel__link${isActive ? ' is-active' : ''}`}
+                onClick={fechar}
+              >
+                {item.label}
+                <span>{item.index}</span>
+              </NavLink>
+            ))}
+
+            <div className="nav-panel__foot">
+              {currentUser ? (
+                <>
+                  <p className="caption">
+                    Conectado como <strong>{currentUser.email}</strong>
+                  </p>
+                  <button
+                    type="button"
+                    className="btn btn--ghost btn--block"
+                    onClick={() => {
+                      logout();
+                      fechar();
+                    }}
+                  >
+                    Sair da conta
+                  </button>
+                </>
+              ) : (
+                <>
+                  <NavLink to="/login" className="btn btn--ghost btn--block">
+                    Entrar
+                  </NavLink>
+                  <NavLink to="/cadastro" className="btn btn--block">
+                    Criar conta
+                  </NavLink>
+                </>
+              )}
+            </div>
           </nav>
         </>
       )}

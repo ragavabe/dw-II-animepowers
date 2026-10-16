@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import powersData from '../data/powers.json';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { elementClass } from '../data/elementMeta';
+import { Plus, Trash, ArrowUpRight } from './Icons';
 
 const MAX = 6;
 
@@ -16,12 +18,13 @@ export default function DeckBuilder() {
   );
   const totalDano = deckPowers.reduce((s, p) => s + p.dano, 0);
   const totalCusto = deckPowers.reduce((s, p) => s + p.custo, 0);
+  const vazio = deckPowers.length === 0;
 
   function add(id) {
     setMsg('');
     const nid = Number(id);
-    if (deck.includes(nid)) return setMsg('Este poder já está no grimório.');
-    if (deck.length >= MAX) return setMsg(`Limite de ${MAX} poderes atingido. Remova um para adicionar.`);
+    if (deck.includes(nid)) return setMsg('Esta técnica já está no grimório.');
+    if (deck.length >= MAX) return setMsg(`Limite de ${MAX} técnicas atingido. Remova uma para adicionar.`);
     setDeck([...deck, nid]);
   }
 
@@ -34,7 +37,7 @@ export default function DeckBuilder() {
     const json = JSON.stringify(deck, null, 2);
     navigator.clipboard?.writeText(json).catch(() => {});
     setImportText(json);
-    setMsg('Deck copiado/exportado abaixo. Salve esse JSON.');
+    setMsg('Grimório copiado para a área de transferência e abaixo, pronto para salvar.');
   }
 
   function importar() {
@@ -45,85 +48,191 @@ export default function DeckBuilder() {
       const unicos = [...new Set(validos)].slice(0, MAX);
       if (unicos.length === 0) throw new Error('vazio');
       setDeck(unicos);
-      setMsg(`Deck importado com ${unicos.length} poder(es).`);
+      setMsg(`${unicos.length} técnica(s) importada(s).`);
     } catch {
-      setMsg('JSON inválido. Cole um array como [1, 5, 9].');
+      setMsg('JSON inválido. Cole um array no formato [1, 5, 9].');
     }
   }
 
+  const disponiveis = powersData.filter((p) => !deck.includes(p.id));
+
   return (
-    <div>
-      <div className="deck-summary-card card">
-        <div className="deck-summary-header">
-          <strong>Seu Grimório Ativo ({deck.length}/{MAX})</strong>
-          <span className="deck-stats-badges">
-            <span className="stat">💥 Dano Total: {totalDano}</span>
-            <span className="stat">⚡ Custo Total: {totalCusto}</span>
+    <div className="codex">
+      {/* ----------------------------------------------------- resumo */}
+      <section className="codex__status" aria-label="Resumo do grimório">
+        <div className="codex__slot">
+          <span className="codex__slot-label">Técnicas</span>
+          <span className={`codex__slot-value${vazio ? ' codex__slot-value--empty' : ''}`}>
+            {String(deckPowers.length).padStart(2, '0')}/{MAX}
+          </span>
+          <span className="codex__slots" aria-hidden="true">
+            {Array.from({ length: MAX }, (_, i) => (
+              <span key={i} className={`codex__pip${i < deckPowers.length ? ' is-filled' : ''}`} />
+            ))}
           </span>
         </div>
+        <div className="codex__slot">
+          <span className="codex__slot-label">Dano somado</span>
+          <span className={`codex__slot-value${vazio ? ' codex__slot-value--empty' : ''} codex__slot-value--dmg`}>
+            {totalDano}
+          </span>
+        </div>
+        <div className="codex__slot">
+          <span className="codex__slot-label">Custo somado</span>
+          <span className={`codex__slot-value${vazio ? ' codex__slot-value--empty' : ''} codex__slot-value--cost`}>
+            {totalCusto}
+          </span>
+        </div>
+        <div className="codex__slot">
+          <span className="codex__slot-label">Ações</span>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <button type="button" className="btn btn--ghost" onClick={exportar} disabled={vazio}>
+              Exportar
+            </button>
+            <button type="button" className="btn btn--quiet" onClick={() => setDeck([])} disabled={vazio}>
+              Limpar
+            </button>
+          </div>
+        </div>
+      </section>
 
-        {deckPowers.length === 0 ? (
-          <p className="muted">Vazio. Equipe poderes da lista abaixo para montar seu arsenal.</p>
+      {msg && (
+        <p role="status" className={`notice${msg.includes('inválido') || msg.includes('Limite') || msg.includes('já está') ? ' notice--neg' : ' notice--pos'}`}>
+          {msg}
+        </p>
+      )}
+
+      {/* ------------------------------------------------ lista do grimório */}
+      <section>
+        <div className="codex__picker-head">
+          <h2 className="codex__picker-title">Seu grimório</h2>
+          <span className="caption">{deckPowers.length} de {MAX} vagas preenchidas</span>
+        </div>
+
+        {vazio ? (
+          <div className="empty-state">
+            <p className="label">Compêndio vazio</p>
+            <h3 className="empty-state__title">Nenhuma técnica guardada</h3>
+            <p className="empty-state__text">
+              Equipe até {MAX} técnicas na lista abaixo. Elas ficam salvas neste navegador e
+              podem ser exportadas em JSON.
+            </p>
+            <Link className="btn" to="/catalogo">
+              Procurar no catálogo <ArrowUpRight size={15} />
+            </Link>
+          </div>
         ) : (
-          <div className="deck-items-grid">
-            {deckPowers.map((p) => (
-              <div key={p.id} className="deck-power-item">
-                <img src={p.imagem} alt={p.nome} className="deck-power-thumb" />
-                <div className="deck-power-details">
-                  <span className="deck-power-name">{p.nome}</span>
-                  <small className="muted">{p.categoria} • 💥 {p.dano} • ⚡ {p.custo}</small>
+          <div className="codex__list">
+            {deckPowers.map((p, i) => (
+              <article className="codex__entry" key={p.id}>
+                <span className="index-mark">{String(i + 1).padStart(2, '0')}</span>
+                <img className="codex__thumb" src={p.imagem} alt="" loading="lazy" />
+
+                <div className="codex__text">
+                  <h3 className="codex__name">
+                    <Link to={`/poder/${p.id}`}>{p.nome}</Link>
+                  </h3>
+                  <p className="codex__meta">
+                    {p.personagem} · {p.anime} · {p.categoria}
+                  </p>
                 </div>
-                <button className="ghost deck-remove-btn" onClick={() => remove(p.id)} title="Remover do grimório">
-                  Remover
-                </button>
-              </div>
+
+                <div className="codex__stats">
+                  <span className={`tag ${elementClass(p.elemento)}`}>{p.elemento}</span>
+                  <span className="stat__value stat__value--dmg">{p.dano}</span>
+                  <span className="stat__value stat__value--cost">{p.custo}</span>
+                </div>
+
+                <div className="codex__actions">
+                  <Link
+                    to={`/poder/${p.id}`}
+                    className="icon-btn"
+                    aria-label={`Ver detalhes de ${p.nome}`}
+                    title="Ver detalhes"
+                  >
+                    <ArrowUpRight size={15} />
+                  </Link>
+                  <button
+                    type="button"
+                    className="icon-btn icon-btn--danger"
+                    onClick={() => remove(p.id)}
+                    aria-label={`Remover ${p.nome} do grimório`}
+                    title="Remover"
+                  >
+                    <Trash size={15} />
+                  </button>
+                </div>
+              </article>
             ))}
           </div>
         )}
+      </section>
 
-        <div className="btn-row">
-          <button className="ghost" onClick={() => setDeck([])} disabled={deck.length === 0}>Limpar deck</button>
-          <button className="ghost" onClick={exportar} disabled={deck.length === 0}>Exportar JSON</button>
+      {/* --------------------------------------------------- lista de seleção */}
+      <section>
+        <div className="codex__picker-head">
+          <h2 className="codex__picker-title">Equipar técnica</h2>
+          <span className="caption">{disponiveis.length} disponíveis</span>
         </div>
-      </div>
 
-      {msg && <p role="status" className="form-status">{msg}</p>}
+        <div className="codex__list">
+          {disponiveis.map((p) => (
+            <article className="codex__entry" key={p.id}>
+              <img className="codex__thumb" src={p.imagem} alt="" loading="lazy" />
 
-      <h3 className="section-title">Equipar técnicas ({powersData.length} disponíveis)</h3>
-      <ul className="deck-add-grid">
-        {powersData.map((p) => (
-          <li key={p.id} className="card deck-add-card">
-            <div className="deck-card-thumb-wrap">
-              <img src={p.imagem} alt={p.nome} className="deck-card-thumb" loading="lazy" />
-              <span className={`deck-card-element ${elementClass(p.elemento)}`}>{p.elemento}</span>
-            </div>
-            <div className="deck-add-info">
-              <strong>{p.nome}</strong>
-              <small className="muted">{p.personagem} · {p.anime}</small>
-              <div className="deck-add-stats">
-                <span className="card-stat"><span className="card-stat-label">Dano</span><span className="card-stat-value stat-dano">{p.dano}</span></span>
-                <span className="card-stat"><span className="card-stat-label">Custo</span><span className="card-stat-value stat-custo">{p.custo}</span></span>
+              <div className="codex__text">
+                <h3 className="codex__name">{p.nome}</h3>
+                <p className="codex__meta">
+                  {p.personagem} · {p.anime} · {p.categoria}
+                </p>
               </div>
-            </div>
-            <button className="ghost" onClick={() => add(p.id)} disabled={deck.includes(p.id)}>
-              {deck.includes(p.id) ? 'Equipado ✓' : '+ Equipar'}
-            </button>
-          </li>
-        ))}
-      </ul>
 
-      <h3 className="section-title">Importar grimório</h3>
-      <div className="toolbar">
-        <input
-          type="text"
-          placeholder='Cole JSON ex: [1, 5, 9]'
-          value={importText}
-          onChange={(e) => setImportText(e.target.value)}
-          aria-label="JSON do deck para importar"
-          style={{ flex: 1 }}
-        />
-        <button onClick={importar}>Importar</button>
-      </div>
+              <div className="codex__stats">
+                <span className={`tag ${elementClass(p.elemento)}`}>{p.elemento}</span>
+                <span className="stat__value stat__value--dmg">{p.dano}</span>
+                <span className="stat__value stat__value--cost">{p.custo}</span>
+              </div>
+
+              <button
+                type="button"
+                className="btn btn--ghost"
+                onClick={() => add(p.id)}
+                disabled={deck.length >= MAX}
+              >
+                <Plus size={15} />
+                Equipar
+              </button>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------- importar */}
+      <section>
+        <div className="codex__picker-head">
+          <h2 className="codex__picker-title">Importar grimório</h2>
+          <span className="caption">Cole um array JSON de ids</span>
+        </div>
+
+        <div className="codex__import">
+          <div className="field">
+            <label className="field__label" htmlFor="importar">
+              JSON do grimório
+            </label>
+            <input
+              id="importar"
+              className="input"
+              type="text"
+              placeholder="[1, 5, 9]"
+              value={importText}
+              onChange={(e) => setImportText(e.target.value)}
+            />
+          </div>
+          <button type="button" className="btn" onClick={importar}>
+            Importar
+          </button>
+        </div>
+      </section>
     </div>
   );
 }

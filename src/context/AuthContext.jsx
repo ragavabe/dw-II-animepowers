@@ -1,30 +1,10 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { DB_CONFIG, ANIME_AVATARS } from '../config/db';
+import { DB_CONFIG } from '../config/db';
 
 const USERS_STORAGE_KEY = `${DB_CONFIG.dbName}_users_table`;
 const SESSION_STORAGE_KEY = `${DB_CONFIG.dbName}_auth_session`;
 
-// Contas padrão de demonstração pré-carregadas com avatares anime
-const INITIAL_USERS = [
-  {
-    id: 'user_1',
-    email: 'otaku@animepowers.com',
-    password: 'password123',
-    name: 'Guerreiro Supremo',
-    avatar: ANIME_AVATARS[0].url,
-    role: 'Guerreiro Rank SSS',
-    createdAt: '2026-01-01T00:00:00.000Z'
-  },
-  {
-    id: 'user_2',
-    email: 'exemplo@gmail.com',
-    password: '123',
-    name: 'Caçador de Poderes',
-    avatar: ANIME_AVATARS[1].url,
-    role: 'Shinobi Especial',
-    createdAt: '2026-02-15T00:00:00.000Z'
-  }
-];
+// Nenhuma conta é pré-carregada: usuários se cadastram pelo formulário.
 
 const AuthContext = createContext(null);
 
@@ -83,7 +63,6 @@ export function AuthProvider({ children }) {
       const session = localStorage.getItem(SESSION_STORAGE_KEY);
       if (session) {
         const parsed = JSON.parse(session);
-        if (!parsed.avatar) parsed.avatar = ANIME_AVATARS[0].url;
         return parsed;
       }
       return null;
@@ -98,14 +77,11 @@ export function AuthProvider({ children }) {
   const getUsers = useCallback(() => {
     try {
       const raw = localStorage.getItem(USERS_STORAGE_KEY);
-      if (!raw) return INITIAL_USERS;
+      if (!raw) return [];
       const parsed = JSON.parse(raw);
-      return parsed.map((u, i) => ({
-        ...u,
-        avatar: u.avatar || ANIME_AVATARS[i % ANIME_AVATARS.length].url
-      }));
+      return Array.isArray(parsed) ? parsed : [];
     } catch {
-      return INITIAL_USERS;
+      return [];
     }
   }, []);
 
@@ -130,8 +106,8 @@ export function AuthProvider({ children }) {
           id: 'google_' + (payload.sub || Date.now()),
           email: payload.email.toLowerCase(),
           name: payload.name || payload.email.split('@')[0],
-          avatar: payload.picture || ANIME_AVATARS[0].url,
-          role: 'Guerreiro da Luz Celestial',
+          avatar: payload.picture || null,
+          role: 'Membro via Google',
           createdAt: new Date().toISOString(),
           provider: 'google'
         };
@@ -139,7 +115,7 @@ export function AuthProvider({ children }) {
         localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(updatedUsers));
       } else {
         // Atualiza avatar com a foto do Google se não tiver ou estiver desatualizado
-        if (payload.picture && (!user.avatar || user.avatar.includes('unsplash.com'))) {
+        if (payload.picture && !user.avatar) {
           user.avatar = payload.picture;
         }
         if (!user.name && payload.name) {
@@ -154,8 +130,8 @@ export function AuthProvider({ children }) {
         id: user.id,
         email: user.email,
         name: user.name,
-        avatar: user.avatar || ANIME_AVATARS[0].url,
-        role: user.role || 'Guerreiro Supremo',
+        avatar: user.avatar || null,
+        role: user.role || 'Membro do arquivo',
         provider: 'google'
       };
 
@@ -168,18 +144,6 @@ export function AuthProvider({ children }) {
       return { success: false, message: 'Falha ao autenticar com o Google.' };
     }
   }, [getUsers]);
-
-  // Inicializa o banco de dados de usuários no localStorage se não existir
-  useEffect(() => {
-    try {
-      const existing = localStorage.getItem(USERS_STORAGE_KEY);
-      if (!existing) {
-        localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(INITIAL_USERS));
-      }
-    } catch (e) {
-      console.error('Erro ao acessar banco local:', e);
-    }
-  }, []);
 
   // Inicializa Google Identity Services
   useEffect(() => {
@@ -227,9 +191,7 @@ export function AuthProvider({ children }) {
       return { success: false, message: 'Este e-mail já está cadastrado! Faça login.' };
     }
 
-    const chosenAvatar =
-      avatarUrl ||
-      ANIME_AVATARS[Math.floor(Math.random() * ANIME_AVATARS.length)].url;
+    const chosenAvatar = avatarUrl || null;
 
     const newUser = {
       id: 'user_' + Date.now(),
@@ -237,7 +199,7 @@ export function AuthProvider({ children }) {
       password: cleanPassword,
       name: cleanEmail.split('@')[0],
       avatar: chosenAvatar,
-      role: 'Iniciante do Grimório',
+      role: 'Membro do arquivo',
       createdAt: new Date().toISOString()
     };
 
@@ -280,8 +242,8 @@ export function AuthProvider({ children }) {
       id: user.id,
       email: user.email,
       name: user.name,
-      avatar: user.avatar || ANIME_AVATARS[0].url,
-      role: user.role || 'Guerreiro das Sombras'
+      avatar: user.avatar || null,
+      role: user.role || 'Membro do arquivo'
     };
 
     if (remember) {
@@ -323,8 +285,8 @@ export function AuthProvider({ children }) {
         id: 'google_sim_' + Date.now(),
         email: userEmail,
         name: userName,
-        avatar: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=200&auto=format&fit=crop&q=80',
-        role: 'Guerreiro Google Rank S',
+        avatar: null,
+        role: 'Membro via Google',
         createdAt: new Date().toISOString(),
         provider: 'google'
       };
@@ -336,7 +298,7 @@ export function AuthProvider({ children }) {
       email: user.email,
       name: user.name,
       avatar: user.avatar,
-      role: user.role || 'Guerreiro Google',
+      role: user.role || 'Membro via Google',
       provider: 'google'
     };
     localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(sessionData));
@@ -414,7 +376,6 @@ export function AuthProvider({ children }) {
         logout,
         updateUserAvatar,
         dbConfig: DB_CONFIG,
-        animeAvatars: ANIME_AVATARS
       }}
     >
       {children}

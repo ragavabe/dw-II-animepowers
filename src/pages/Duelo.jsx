@@ -6,12 +6,21 @@ export default function Duelo() {
   const preselectPower = state?.preselectPower ?? null;
 
   return (
-    <div className="page-head">
-      <h1>Simulador de Duelo</h1>
-      <p className="muted">
-        Escolha dois poderes e descubra o vencedor pela fórmula de poder + custo + sorte.
-      </p>
-      <DuelSimulator initialPowerId={preselectPower} />
-    </div>
+    <>
+      <div className="shell page-head">
+        <div className="page-head__title">
+          <p className="index-mark">/ 03 — Arena</p>
+          <h1 className="display d-xl">Simulador de duelo</h1>
+          <p className="page-head__lede">
+            Duas técnicas entram no confronto. A fórmula resolve o vencedor aplicando dano,
+            custo, o multiplicador elemental e a sua afinidade pessoal.
+          </p>
+        </div>
+      </div>
+
+      <div className="shell">
+        <DuelSimulator initialPowerId={preselectPower} />
+      </div>
+    </>
   );
 }

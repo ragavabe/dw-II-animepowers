@@ -1,11 +1,20 @@
-export default function EmptyState({ busca, categoria, onClear }) {
+import { Search } from './Icons';
+
+export default function EmptyState({ busca, onClear }) {
   return (
-    <div role="status" className="empty">
-      <p>
-        Nenhum poder encontrado
-        {busca ? ` para “${busca}”` : ''} {categoria !== 'Todas' ? ` em ${categoria}` : ''}.
+    <div className="empty-state" role="status">
+      <p className="label">Busca sem resultado</p>
+      <h2 className="empty-state__title">Nada encontrado</h2>
+      <p className="empty-state__text">
+        {busca
+          ? `Nenhuma técnica corresponde a “${busca}” com os filtros atuais. `
+          : 'Nenhuma técnica corresponde aos filtros atuais. '}
+        Tente outra palavra ou volte ao catálogo completo.
       </p>
-      <button className="ghost" onClick={onClear}>Limpar filtros</button>
+      <button type="button" className="btn" onClick={onClear}>
+        <Search size={15} />
+        Limpar filtros
+      </button>
     </div>
   );
 }

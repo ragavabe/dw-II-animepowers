@@ -1,84 +1,49 @@
 {
-  "name": "Anime Powers — Catálogo e Simulador",
+  "name": "Anime Powers — Arquivo de Técnicas",
   "short_name": "Anime Powers",
-  "description": "Explore 54+ poderes de anime, simule duelos com afinidades elementais, monte seu grimório e descubra sua afinidade elemental!",
-  "start_url": "/",
+  "description": "Arquivo de técnicas de anime com atributos comparáveis, arena de duelo, grimório pessoal e teste de afinidade elemental.",
+  "id": "/poderesanime/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#0a0b0f",
-  "theme_color": "#0a0b0f",
-  "orientation": "portrait-primary",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "any",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "categories": ["entertainment", "education"],
   "icons": [
     {
-      "src": "/icon-72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     },
     {
-      "src": "/icon-96.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icon-128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icon-144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icon-152.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icon-384.png",
-      "sizes": "384x384",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ],
-  "categories": ["entertainment", "games"],
   "shortcuts": [
     {
       "name": "Catálogo",
       "short_name": "Catálogo",
-      "description": "Ver catálogo de poderes",
-      "url": "/catalogo",
-      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+      "description": "Ver o catálogo de técnicas",
+      "url": "./#/catalogo"
     },
     {
       "name": "Duelo",
       "short_name": "Duelo",
-      "description": "Simular duelo",
-      "url": "/duelo",
-      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+      "description": "Abrir a arena de duelo",
+      "url": "./#/duelo"
     },
     {
       "name": "Grimório",
       "short_name": "Grimório",
-      "description": "Montar grimório",
-      "url": "/grimorio",
-      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+      "description": "Abrir o grimório pessoal",
+      "url": "./#/grimorio"
     }
   ]
 }

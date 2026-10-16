@@ -1,77 +1,130 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import powersData from '../data/powers.json';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useDebounce } from '../hooks/useDebounce';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import SearchBar from './SearchBar';
+import { useReveal } from '../hooks/useReveal';
 import FilterBar, {
   CATEGORIAS, ANIMES, ELEMENTOS, MIN_DANO, MAX_DANO, MIN_CUSTO, MAX_CUSTO
 } from './FilterBar';
 import PowerCard from './PowerCard';
-import PowerModal from './PowerModal';
 import EmptyState from './EmptyState';
 
+const padrao = {
+  q: '',
+  categoria: 'Todas',
+  anime: 'Todos',
+  elemento: 'Todos',
+  ordenarPor: 'nome',
+  somenteFavs: false,
+  dano: [MIN_DANO, MAX_DANO],
+  custo: [MIN_CUSTO, MAX_CUSTO]
+};
+
+function fromParams(params) {
+  const d = params.get('dano');
+  const c = params.get('custo');
+  return {
+    q: params.get('q') || padrao.q,
+    categoria: CATEGORIAS.includes(params.get('categoria')) ? params.get('categoria') : padrao.categoria,
+    anime: ANIMES.includes(params.get('anime')) ? params.get('anime') : padrao.anime,
+    elemento: ELEMENTOS.includes(params.get('elemento')) ? params.get('elemento') : padrao.elemento,
+    ordenarPor: ['nome', 'dano', 'custo', 'custoBeneficio', 'recentes'].includes(params.get('ordem'))
+      ? params.get('ordem')
+      : padrao.ordenarPor,
+    somenteFavs: params.get('favs') === '1',
+    dano: d ? d.split('-').map(Number) : padrao.dano,
+    custo: c ? c.split('-').map(Number) : padrao.custo
+  };
+}
+
+function toParams(estado) {
+  const p = new URLSearchParams();
+  if (estado.q) p.set('q', estado.q);
+  if (estado.categoria !== padrao.categoria) p.set('categoria', estado.categoria);
+  if (estado.anime !== padrao.anime) p.set('anime', estado.anime);
+  if (estado.elemento !== padrao.elemento) p.set('elemento', estado.elemento);
+  if (estado.ordenarPor !== padrao.ordenarPor) p.set('ordem', estado.ordenarPor);
+  if (estado.somenteFavs) p.set('favs', '1');
+  if (estado.dano[0] !== MIN_DANO || estado.dano[1] !== MAX_DANO) p.set('dano', estado.dano.join('-'));
+  if (estado.custo[0] !== MIN_CUSTO || estado.custo[1] !== MAX_CUSTO) p.set('custo', estado.custo.join('-'));
+  return p;
+}
+
 export default function PowerCatalog() {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const paramCategoria = searchParams.get('categoria');
-  const paramAnime = searchParams.get('anime');
-  const paramElemento = searchParams.get('elemento');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const revealRef = useReveal({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' });
 
-  const [busca, setBusca] = useState(searchParams.get('q') || '');
-  const [categoria, setCategoria] = useState(
-    CATEGORIAS.includes(paramCategoria) ? paramCategoria : 'Todas'
-  );
-  const [anime, setAnime] = useState(
-    ANIMES.includes(paramAnime) ? paramAnime : 'Todos'
-  );
-  const [elemento, setElemento] = useState(
-    ELEMENTOS.includes(paramElemento) ? paramElemento : 'Todos'
-  );
-  const [danoRange, setDanoRange] = useState([MIN_DANO, MAX_DANO]);
-  const [custoRange, setCustoRange] = useState([MIN_CUSTO, MAX_CUSTO]);
-  const [somenteFavs, setSomenteFavs] = useState(false);
-  const [ordenarPor, setOrdenarPor] = useState('nome');
+  const inicial = useMemo(() => fromParams(searchParams), []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const [busca, setBusca] = useState(inicial.q);
+  const [categoria, setCategoria] = useState(inicial.categoria);
+  const [anime, setAnime] = useState(inicial.anime);
+  const [elemento, setElemento] = useState(inicial.elemento);
+  const [ordenarPor, setOrdenarPor] = useState(inicial.ordenarPor);
+  const [somenteFavs, setSomenteFavs] = useState(inicial.somenteFavs);
+  const [danoRange, setDanoRange] = useState(inicial.dano);
+  const [custoRange, setCustoRange] = useState(inicial.custo);
+
   const [favoritos, setFavoritos] = useLocalStorage('pa:favoritos', []);
-  const [deck, setDeck] = useLocalStorage('pa:deck', []);
-  const [selecionado, setSelecionado] = useState(null);
-
   const termo = useDebounce(busca.trim().toLowerCase(), 200);
 
+  // a URL guarda os filtros: o link pode ser compartilhado e o botão voltar
+  // do navegador devolve exatamente a mesma busca
+  useEffect(() => {
+    const proximos = toParams({
+      q: termo, categoria, anime, elemento, ordenarPor, somenteFavs, dano: danoRange, custo: custoRange
+    });
+    const atuais = new URLSearchParams(searchParams);
+    if (proximos.toString() !== atuais.toString()) {
+      setSearchParams(proximos, { replace: true });
+    }
+  }, [termo, categoria, anime, elemento, ordenarPor, somenteFavs, danoRange, custoRange]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const filtrados = useMemo(() => {
-    let lista = powersData.filter((p) => {
+    const lista = powersData.filter((p) => {
       const okBusca =
         !termo ||
         p.nome.toLowerCase().includes(termo) ||
         p.personagem.toLowerCase().includes(termo) ||
-        p.anime.toLowerCase().includes(termo);
-      const okCat = categoria === 'Todas' || p.categoria === categoria;
-      const okAnime = anime === 'Todos' || p.anime === anime;
-      const okElemento = elemento === 'Todos' || p.elemento === elemento;
-      const okDano = p.dano >= danoRange[0] && p.dano <= danoRange[1];
-      const okCusto = p.custo >= custoRange[0] && p.custo <= custoRange[1];
-      const okFav = !somenteFavs || favoritos.includes(p.id);
-      return okBusca && okCat && okAnime && okElemento && okDano && okCusto && okFav;
+        p.anime.toLowerCase().includes(termo) ||
+        p.categoria.toLowerCase().includes(termo);
+      return (
+        okBusca &&
+        (categoria === 'Todas' || p.categoria === categoria) &&
+        (anime === 'Todos' || p.anime === anime) &&
+        (elemento === 'Todos' || p.elemento === elemento) &&
+        p.dano >= danoRange[0] && p.dano <= danoRange[1] &&
+        p.custo >= custoRange[0] && p.custo <= custoRange[1] &&
+        (!somenteFavs || favoritos.includes(p.id))
+      );
     });
-    return [...lista].sort((a, b) => {
-      if (ordenarPor === 'dano') return b.dano - a.dano;
-      if (ordenarPor === 'custo') return a.custo - b.custo;
-      if (ordenarPor === 'custoBeneficio') {
-        const ratioA = a.dano / (a.custo || 1);
-        const ratioB = b.dano / (b.custo || 1);
-        return ratioB - ratioA;
-      }
-      return a.nome.localeCompare(b.nome, 'pt-BR');
-    });
+
+    const ordenados = [...lista];
+    switch (ordenarPor) {
+      case 'dano':
+        ordenados.sort((a, b) => b.dano - a.dano || a.nome.localeCompare(b.nome, 'pt-BR'));
+        break;
+      case 'custo':
+        ordenados.sort((a, b) => a.custo - b.custo || a.nome.localeCompare(b.nome, 'pt-BR'));
+        break;
+      case 'custoBeneficio':
+        ordenados.sort((a, b) => b.dano / (b.custo || 1) - a.dano / (a.custo || 1));
+        break;
+      case 'recentes':
+        ordenados.sort((a, b) => b.id - a.id);
+        break;
+      default:
+        ordenados.sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+    }
+    return ordenados;
   }, [termo, categoria, anime, elemento, danoRange, custoRange, somenteFavs, ordenarPor, favoritos]);
 
-  function toggleFav(id) {
-    setFavoritos((prev) =>
-      prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]
-    );
-  }
+  const toggleFav = useCallback((id) => {
+    setFavoritos((prev) => (prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]));
+  }, [setFavoritos]);
 
-  function limpar() {
+  const limpar = useCallback(() => {
     setBusca('');
     setCategoria('Todas');
     setAnime('Todos');
@@ -80,71 +133,53 @@ export default function PowerCatalog() {
     setCustoRange([MIN_CUSTO, MAX_CUSTO]);
     setSomenteFavs(false);
     setOrdenarPor('nome');
-  }
-
-  function handleAddToDeck(powerId) {
-    setDeck((prev) => prev.includes(powerId) ? prev : [...prev, powerId]);
-  }
-
-  function handleTestInDuel(powerId) {
-    navigate('/duelo', { state: { preselectPower: powerId } });
-  }
+  }, []);
 
   return (
-    <section aria-label="Catálogo de poderes">
-      <div className="toolbar">
-        <SearchBar value={busca} onChange={setBusca} />
-        <FilterBar
-          categoria={categoria}
-          setCategoria={setCategoria}
-          anime={anime}
-          setAnime={setAnime}
-          elemento={elemento}
-          setElemento={setElemento}
-          danoRange={danoRange}
-          setDanoRange={setDanoRange}
-          custoRange={custoRange}
-          setCustoRange={setCustoRange}
-          ordenarPor={ordenarPor}
-          setOrdenarPor={setOrdenarPor}
-          somenteFavs={somenteFavs}
-          setSomenteFavs={setSomenteFavs}
-          favCount={favoritos.length}
-          onClear={limpar}
-        />
+    <div className="catalog">
+      <FilterBar
+        busca={busca} setBusca={setBusca}
+        categoria={categoria} setCategoria={setCategoria}
+        anime={anime} setAnime={setAnime}
+        elemento={elemento} setElemento={setElemento}
+        danoRange={danoRange} setDanoRange={setDanoRange}
+        custoRange={custoRange} setCustoRange={setCustoRange}
+        ordenarPor={ordenarPor} setOrdenarPor={setOrdenarPor}
+        somenteFavs={somenteFavs} setSomenteFavs={setSomenteFavs}
+        favCount={favoritos.length}
+        onClear={limpar}
+      />
+
+      <div className="catalog__resultbar">
+        <p role="status">
+          <strong>{filtrados.length}</strong>{' '}
+          {filtrados.length === 1 ? 'técnica encontrada' : 'técnicas encontradas'}
+          {filtrados.length !== powersData.length && ` de ${powersData.length}`}
+        </p>
+        <p className="caption">
+          {ordenarPor === 'nome' && 'Ordenado por nome'}
+          {ordenarPor === 'dano' && 'Ordenado por dano'}
+          {ordenarPor === 'custo' && 'Ordenado por custo'}
+          {ordenarPor === 'custoBeneficio' && 'Ordenado por custo-benefício'}
+          {ordenarPor === 'recentes' && 'Ordenado por adição recente'}
+        </p>
       </div>
 
-      <p className="muted" role="status">
-        {filtrados.length} poder{filtrados.length !== 1 ? 'es' : ''} encontrado{filtrados.length !== 1 ? 's' : ''}.
-      </p>
-
       {filtrados.length === 0 ? (
-        <EmptyState busca={busca} categoria={categoria} onClear={limpar} />
+        <EmptyState busca={busca} onClear={limpar} />
       ) : (
-        <ul className="grid">
-          {filtrados.map((p) => (
+        <div className="pgrid" ref={revealRef}>
+          {filtrados.map((p, i) => (
             <PowerCard
               key={p.id}
               power={p}
               isFav={favoritos.includes(p.id)}
               onFav={toggleFav}
-              onDetails={setSelecionado}
+              revealIndex={Math.min(i, 11)}
             />
           ))}
-        </ul>
+        </div>
       )}
-
-      {selecionado && (
-        <PowerModal
-          power={selecionado}
-          isFav={favoritos.includes(selecionado.id)}
-          onFav={toggleFav}
-          onClose={() => setSelecionado(null)}
-          onAddToDeck={handleAddToDeck}
-          onTestInDuel={handleTestInDuel}
-          inDeck={deck.includes(selecionado.id)}
-        />
-      )}
-    </section>
+    </div>
   );
 }
